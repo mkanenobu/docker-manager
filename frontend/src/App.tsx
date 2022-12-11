@@ -5,6 +5,7 @@ import { Greet } from "../wailsjs/go/main/App";
 import { AppContainer } from "./components/AppContainer";
 import { DockerPs } from "../wailsjs/go/main/App";
 import useSWR from "swr";
+import { Containers } from "./components/Containers";
 
 const App = () => {
   const [resultText, setResultText] = useState(
@@ -18,7 +19,7 @@ const App = () => {
     Greet(name).then(updateResultText);
   };
 
-  const { data } = useSWR("dockerps", DockerPs);
+  const { data } = useSWR("dockerps", DockerPs, { refreshInterval: 1000 });
 
   return (
     <AppContainer>
@@ -26,20 +27,7 @@ const App = () => {
       <div id="result" className="result">
         {resultText}
       </div>
-      <div>{JSON.stringify(data, undefined, 2)}</div>
-      <div id="input" className="input-box">
-        <input
-          id="name"
-          className="input"
-          onChange={updateName}
-          autoComplete="off"
-          name="input"
-          type="text"
-        />
-        <button className="btn" onClick={greet}>
-          Greet
-        </button>
-      </div>
+      {data && <Containers containers={data} />}
     </AppContainer>
   );
 };

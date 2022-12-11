@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	docker "docker-manager/src"
+	"docker-manager/src/docker"
 	"fmt"
 )
 
@@ -27,10 +27,10 @@ func (a *App) Greet(name string) string {
 	return fmt.Sprintf("Hello %s, It's show time!", name)
 }
 
-func (a *App) DockerPs() string {
+func (a *App) DockerPs() []docker.Container {
 	out, err := docker.Ps()
 	if err != nil {
-		return err.Error()
+		panic(err)
 	}
 	return out
 }
