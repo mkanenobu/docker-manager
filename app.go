@@ -34,3 +34,27 @@ func (a *App) DockerPs() []docker.Container {
 	}
 	return out
 }
+
+func (a *App) DockerPause(id string) string {
+	err := docker.Pause(id)
+	if err != nil {
+		return err.Error()
+	}
+	return ""
+}
+
+func (a *App) DockerUnpause(id string) string {
+	err := docker.Unpause(id)
+	if err != nil {
+		return err.Error()
+	}
+	return ""
+}
+
+func (a *App) DockerStop(id string) string {
+	err := docker.Stop(id)
+	if err != nil {
+		return err.Error()
+	}
+	return ""
+}
