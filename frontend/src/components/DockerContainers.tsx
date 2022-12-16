@@ -1,7 +1,7 @@
 import { type FC } from "react";
-import type { docker } from "../../wailsjs/go/models";
+import { type WailsTypes } from "../models/wails";
 import dayjs from "dayjs";
-import { Table, Code, Badge, Text, Button, useToasts } from "@geist-ui/core";
+import { Table, Code, Badge, Text } from "@geist-ui/core";
 import { colors } from "../theme/colors";
 import { capitalize } from "../helpers/string-helper";
 import { DockerActionMenu } from "./DockerActionMenu";
@@ -19,7 +19,7 @@ const statusColor = (status: Status) => {
 };
 
 export const DockerContainers: FC<{
-  containers: docker.Container[];
+  containers: WailsTypes.docker.Container[];
 }> = ({ containers }) => {
   return (
     <Table data={containers}>

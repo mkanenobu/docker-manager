@@ -1,10 +1,12 @@
 import { DockerContainers } from "../components/DockerContainers";
 import { Text } from "@geist-ui/core";
 import useSWR from "swr";
-import { DockerPs } from "../../wailsjs/go/main/App";
+import { wails } from "../models/wails";
 
 export const ContainersPage = () => {
-  const { data } = useSWR("docker-ps", DockerPs, { refreshInterval: 1000 });
+  const { data } = useSWR("docker-containers", wails.ContainerPs, {
+    refreshInterval: 1000,
+  });
 
   return (
     <>

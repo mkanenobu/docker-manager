@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 
-export type Route = "containers";
+export type Route = "containers" | "images";
 
 type Router = {
   route: Route;
@@ -11,8 +11,10 @@ type Router = {
 // @ts-expect-error
 export const RouterContext = createContext<Router>(null);
 
+const initialRoute: Route = "images";
+
 export const useRouterValue = (): Router => {
-  const [route, setRoute] = useState<Route>("containers");
+  const [route, setRoute] = useState<Route>(initialRoute);
   const [history, setHistory] = useState<Route[]>([]);
 
   const push = (r: Route) => {
@@ -22,7 +24,7 @@ export const useRouterValue = (): Router => {
 
   const back = () => {
     setHistory((p) => p.slice(0, p.length - 1));
-    setRoute(history.at(-1) ?? "containers");
+    setRoute(history.at(-1) ?? initialRoute);
   };
 
   return {

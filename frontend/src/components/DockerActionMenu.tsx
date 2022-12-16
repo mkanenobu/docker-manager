@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Button, Text } from "@geist-ui/core";
-import { DockerPause, DockerUnpause } from "../../wailsjs/go/main/App";
+import { wails } from "../models/wails";
 import { Menu } from "./atom/Menu";
 import MenuIcon from "@geist-ui/icons/menu";
 import { useToast } from "../hooks/toast-hooks";
@@ -13,27 +13,20 @@ export const DockerActionMenu: FC<{ containerId: string; status: Status }> = ({
   const { showSuccessToast, showErrorToast } = useToast();
 
   const unpause = () => {
-    return DockerUnpause(containerId)
+    return wails
+      .ContainerUnpause(containerId)
       .then((res) => {
-        if (res) {
-          showErrorToast("unpause", res);
-        } else {
-          showSuccessToast("Container unpaused");
-        }
+        showSuccessToast("Container unpaused");
       })
       .catch((err) => {
         showErrorToast("unpause", err.message);
       });
   };
   const pause = () => {
-    return DockerPause(containerId)
+    return wails
+      .ContainerPause(containerId)
       .then((res) => {
-        if (res) {
-          console.error(res);
-          showErrorToast("pause", res);
-        } else {
-          showSuccessToast("Container paused");
-        }
+        showSuccessToast("Container paused");
       })
       .catch((err) => {
         console.error(err);

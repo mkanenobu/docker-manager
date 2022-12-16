@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"docker-manager/src/dialog"
 	"docker-manager/src/docker"
-	"fmt"
+	"github.com/docker/docker/api/types"
+	"log"
 )
 
 // App struct
@@ -22,39 +24,44 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-// Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
-}
-
-func (a *App) DockerPs() []docker.Container {
-	out, err := docker.Ps()
+func (a *App) ContainerPs() []docker.Container {
+	containers, err := docker.Ps()
 	if err != nil {
-		panic(err)
+		log.Print(err)
+		dialog.ShowErrorDialog(a.ctx, err)
 	}
-	return out
+	return containers
 }
 
-func (a *App) DockerPause(id string) string {
+func (a *App) ContainerPause(id string) {
 	err := docker.Pause(id)
 	if err != nil {
-		return err.Error()
+		log.Print(err)
+		dialog.ShowErrorDialog(a.ctx, err)
 	}
-	return ""
 }
 
-func (a *App) DockerUnpause(id string) string {
+func (a *App) ContainerUnpause(id string) {
 	err := docker.Unpause(id)
 	if err != nil {
-		return err.Error()
+		log.Print(err)
+		dialog.ShowErrorDialog(a.ctx, err)
 	}
-	return ""
 }
 
-func (a *App) DockerStop(id string) string {
+func (a *App) ContainerStop(id string) {
 	err := docker.Stop(id)
 	if err != nil {
-		return err.Error()
+		log.Print(err)
+		dialog.ShowErrorDialog(a.ctx, err)
 	}
-	return ""
+}
+
+func (a *App) ImageLs() []types.ImageSummary {
+	images, err := docker.Ls()
+	if err != nil {
+		log.Print(err)
+		dialog.ShowErrorDialog(a.ctx, err)
+	}
+	return images
 }
