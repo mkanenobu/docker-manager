@@ -12,3 +12,4 @@ gen:
 clean:
 	rm -rf build/bin
 	rm -rf frontend/node_modules
+	go clean
