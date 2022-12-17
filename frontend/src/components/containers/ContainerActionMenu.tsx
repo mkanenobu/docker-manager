@@ -7,7 +7,7 @@ import {
   SyncOutlined,
 } from "@ant-design/icons";
 import { Button, Popover } from "antd";
-import { ReactElement, useState, type FC } from "react";
+import { Fragment, ReactElement, useState, type FC } from "react";
 import { copyToClipboard } from "~/helpers/copy-to-clipboard";
 import { useContainerActions } from "~/hooks/container-actions";
 import { ContainerState } from "~/models/container";
@@ -103,9 +103,9 @@ export const ContainerActionMenu: FC<{
             alignItems: "flex-start",
           }}
         >
-          {Object.values(actions).map((action) => {
-            if (action.show) {
-              return (
+          {Object.entries(actions).map(([key, action]) => (
+            <Fragment key={key}>
+              {action.show && (
                 <Button
                   type="text"
                   icon={action.icon}
@@ -114,9 +114,9 @@ export const ContainerActionMenu: FC<{
                 >
                   {action.label}
                 </Button>
-              );
-            }
-          })}
+              )}
+            </Fragment>
+          ))}
         </div>
       }
     >

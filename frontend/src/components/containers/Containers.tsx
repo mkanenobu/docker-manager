@@ -35,8 +35,7 @@ export const Containers: FC = () => {
       refreshInterval: 3000,
     }
   );
-  const revalidateContainers = () =>
-    mutate(undefined, { optimisticData: containers });
+  const revalidateContainers = () => mutate(containers);
 
   return (
     <Table
@@ -57,7 +56,9 @@ export const Containers: FC = () => {
           render: (names: string[]) => (
             <div>
               {names.map((name) => (
-                <Typography.Text key={name}>{name}</Typography.Text>
+                <Typography.Text code key={name}>
+                  {name}
+                </Typography.Text>
               ))}
             </div>
           ),
@@ -79,7 +80,7 @@ export const Containers: FC = () => {
               {dedupe(
                 ports.map((port) => `${port.PublicPort}:${port.PrivatePort}`)
               ).map((port) => (
-                <Tag>{port}</Tag>
+                <Tag key={port}>{port}</Tag>
               ))}
             </div>
           ),
