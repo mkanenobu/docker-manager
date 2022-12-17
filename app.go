@@ -36,7 +36,7 @@ func (a *App) ContainerPs() []container.Container {
 }
 
 func (a *App) ContainerStart(id string) {
-	log.Print("ContainerStart", id)
+	log.Printf("ContainerStart, id: %s", id)
 	err := container.Start(id)
 	if err != nil {
 		log.Print(err)
@@ -45,7 +45,7 @@ func (a *App) ContainerStart(id string) {
 }
 
 func (a *App) ContainerStop(id string) {
-	log.Print("ContainerStop", id)
+	log.Printf("ContainerStop, id: %s", id)
 	err := container.Stop(id)
 	if err != nil {
 		log.Print(err)
@@ -54,7 +54,7 @@ func (a *App) ContainerStop(id string) {
 }
 
 func (a *App) ContainerRestart(id string) {
-	log.Print("ContainerRestart", id)
+	log.Printf("ContainerRestart, id: %s", id)
 	err := container.Restart(id)
 	if err != nil {
 		log.Print(err)
@@ -63,7 +63,7 @@ func (a *App) ContainerRestart(id string) {
 }
 
 func (a *App) ContainerPause(id string) {
-	log.Print("ContainerPause", id)
+	log.Printf("ContainerPause, id: %s", id)
 	err := container.Pause(id)
 	if err != nil {
 		log.Print(err)
@@ -72,7 +72,7 @@ func (a *App) ContainerPause(id string) {
 }
 
 func (a *App) ContainerUnpause(id string) {
-	log.Print("ContainerUnpause", id)
+	log.Printf("ContainerUnpause, id: %s", id)
 	err := container.Unpause(id)
 	if err != nil {
 		log.Print(err)

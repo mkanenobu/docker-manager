@@ -1,12 +1,14 @@
 import {
   BorderOutlined,
   CaretRightOutlined,
+  CodeOutlined,
   MenuOutlined,
   PauseOutlined,
-  RedoOutlined,
+  SyncOutlined,
 } from "@ant-design/icons";
 import { Button, Popover } from "antd";
 import { ReactElement, useState, type FC } from "react";
+import { copyToClipboard } from "~/helpers/copy-to-clipboard";
 import { useContainerActions } from "~/hooks/container-actions";
 import { ContainerState } from "~/models/container";
 
@@ -24,10 +26,11 @@ export const ContainerActionMenu: FC<{
     restartContainer,
   } = useContainerActions();
 
-  const onClick = (action: () => Promise<unknown>) => () => {
-    setOpened(false);
-    action().then(() => revalidateContainers());
-  };
+  const onClick =
+    (action: () => Promise<unknown>, noNeedToRevalidate: boolean) => () => {
+      setOpened(false);
+      action().then(() => !noNeedToRevalidate && revalidateContainers());
+    };
 
   const display = {
     start: state === "exited",
@@ -44,24 +47,33 @@ export const ContainerActionMenu: FC<{
       icon: ReactElement;
       onClick: () => Promise<unknown>;
       show: boolean;
+      noNeedToRevalidate?: boolean;
     }
   > = {
+    exec: {
+      label: "Copy exec command",
+      icon: <CodeOutlined />,
+      onClick: () =>
+        copyToClipboard(`docker exec -it ${containerId.slice(0, 11)} `),
+      show: state === "running",
+      noNeedToRevalidate: true,
+    },
     start: {
       label: "Start",
       icon: <CaretRightOutlined />,
       onClick: () => startContainer(containerId),
       show: state === "exited",
     },
+    restart: {
+      label: "Restart",
+      icon: <SyncOutlined />,
+      onClick: () => restartContainer(containerId),
+      show: state === "running",
+    },
     stop: {
       label: "Stop",
       icon: <BorderOutlined />,
       onClick: () => stopContainer(containerId),
-      show: state === "running",
-    },
-    restart: {
-      label: "Restart",
-      icon: <RedoOutlined />,
-      onClick: () => restartContainer(containerId),
       show: state === "running",
     },
     pause: {
@@ -97,7 +109,8 @@ export const ContainerActionMenu: FC<{
                 <Button
                   type="text"
                   icon={action.icon}
-                  onClick={onClick(action.onClick)}
+                  style={{ width: "100%", textAlign: "left" }}
+                  onClick={onClick(action.onClick, !!action.noNeedToRevalidate)}
                 >
                   {action.label}
                 </Button>

@@ -62,14 +62,14 @@ export const Containers: FC = () => {
             </div>
           ),
         },
-        {
-          title: "Command",
-          dataIndex: "Command",
-          key: "Command",
-          render: (command: string) => (
-            <Typography.Text code>{command}</Typography.Text>
-          ),
-        },
+        // {
+        //   title: "Command",
+        //   dataIndex: "Command",
+        //   key: "Command",
+        //   render: (command: string) => (
+        //     <Typography.Text code>{command}</Typography.Text>
+        //   ),
+        // },
         {
           title: "Ports",
           dataIndex: "Ports",
