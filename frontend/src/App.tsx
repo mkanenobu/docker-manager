@@ -1,7 +1,8 @@
-import { AppContainer } from "./components/AppContainer";
+import { RecoilRoot } from "recoil";
+import { useRouter } from "~/hooks/router-hooks";
+import { AppContainer } from "./components/Layout/AppContainer";
 import { ContainersPage } from "./pages/Containers";
 import { ImagesPage } from "./pages/Images";
-import { RouterContext, useRouter, useRouterValue } from "./hooks/router-hooks";
 
 const Router = () => {
   const router = useRouter();
@@ -20,13 +21,11 @@ const Router = () => {
 };
 
 export const App = () => {
-  const router = useRouterValue();
-
   return (
-    <AppContainer>
-      <RouterContext.Provider value={router}>
+    <RecoilRoot>
+      <AppContainer>
         <Router />
-      </RouterContext.Provider>
-    </AppContainer>
+      </AppContainer>
+    </RecoilRoot>
   );
 };

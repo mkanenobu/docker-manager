@@ -1,22 +1,20 @@
-import { useToasts } from "@geist-ui/core";
+import { message } from "antd";
 
 export const useToast = () => {
-  const { setToast, ...restOp } = useToasts();
+  const [messageApi, ctxHolder] = message.useMessage();
 
   const showSuccessToast = (message: string) => {
-    setToast({
-      text: message,
-      type: "success",
-      delay: 3000,
+    messageApi.success({
+      content: message,
+      duration: 3000,
     });
   };
   const showErrorToast = (operation: string, errMessage: string) => {
-    setToast({
-      text: `Failed to ${operation}\n${errMessage}`,
-      delay: 3000,
-      type: "error",
+    messageApi.error({
+      content: `Failed to ${operation}\n${errMessage}`,
+      duration: 3000,
     });
   };
 
-  return { ...restOp, showSuccessToast, showErrorToast };
+  return { showSuccessToast, showErrorToast };
 };

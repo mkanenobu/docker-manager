@@ -1,7 +1,7 @@
-import { DockerContainers } from "../components/DockerContainers";
-import { Text } from "@geist-ui/core";
+import { Typography } from "antd";
 import useSWR from "swr";
-import { wails } from "../models/wails";
+import { Containers } from "~/components/containers/Containers";
+import { wails } from "~/wails";
 
 export const ContainersPage = () => {
   const { data } = useSWR("docker-containers", wails.ContainerPs, {
@@ -10,8 +10,8 @@ export const ContainersPage = () => {
 
   return (
     <>
-      <Text h1>Containers</Text>
-      <DockerContainers containers={data ?? []} />
+      <Typography.Title>Containers</Typography.Title>
+      <Containers containers={data ?? []} />
     </>
   );
 };

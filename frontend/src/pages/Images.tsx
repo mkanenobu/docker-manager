@@ -1,9 +1,8 @@
-import { Text } from "@geist-ui/core";
+import { Table, Typography } from "antd";
 import useSWR from "swr";
-import { wails } from "../models/wails";
-import { Table } from "@geist-ui/core";
-import { convertByteToHumanReadable } from "../helpers/data-size-helper";
-import { unixToHuman } from "../helpers/date-helper";
+import { convertByteToHumanReadable } from "~/helpers/data-size-helper";
+import { unixToHuman } from "~/helpers/date-helper";
+import { wails } from "~/wails";
 
 const extractTag = (tag: string) => tag.split(":").at(-1);
 const extractRepository = (tag: string) => tag.split(":").at(0);
@@ -35,30 +34,54 @@ export const ImagesPage = () => {
 
   return (
     <>
-      <Text h1>Images</Text>
-      <Table data={formatData(data ?? [])}>
-        <Table.Column prop="ImageId" label="Image ID" />
-        <Table.Column prop="Repository" label="Repository" />
-        <Table.Column prop="Tag" label="Tag" />
-        <Table.Column
-          prop="Size"
-          label="Size"
-          render={(v) => {
-            const { value, unit } = convertByteToHumanReadable(v);
-            return (
-              <div>
-                {sizeFormatter(value)}
-                {unit}
-              </div>
-            );
-          }}
-        />
-        <Table.Column
-          prop="Created"
-          label="Created"
-          render={(v) => <div>{unixToHuman(v)}</div>}
-        />
-      </Table>
+      <Typography.Title>Images</Typography.Title>
+      <Table
+        pagination={false}
+        rowKey="ImageId"
+        dataSource={formatData(data ?? [])}
+        columns={[
+          {
+            title: "ID",
+            dataIndex: "ImageId",
+            key: "ImageId",
+          },
+          {
+            title: "Repository",
+            dataIndex: "Repository",
+            key: "Repository",
+            render: (repo: string) => (
+              <Typography.Text code>{repo}</Typography.Text>
+            ),
+          },
+          {
+            title: "Tag",
+            dataIndex: "Tag",
+            key: "Tag",
+          },
+          {
+            title: "Size",
+            dataIndex: "Size",
+            key: "Size",
+            render: (size: number) => {
+              const { value, unit } = convertByteToHumanReadable(size);
+              return (
+                <Typography.Text>
+                  {sizeFormatter(value)}
+                  {unit}
+                </Typography.Text>
+              );
+            },
+          },
+          {
+            title: "Created",
+            dataIndex: "Created",
+            key: "Created",
+            render: (created: number) => (
+              <Typography.Text>{unixToHuman(created)}</Typography.Text>
+            ),
+          },
+        ]}
+      />
     </>
   );
 };

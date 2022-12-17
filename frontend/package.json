@@ -10,11 +10,14 @@
     "fmt": "prettier 'src/**/*.{ts,tsx}' --write"
   },
   "dependencies": {
-    "@geist-ui/core": "^2.3.8",
-    "@geist-ui/icons": "^1.0.2",
+    "@ant-design/colors": "^6.0.0",
+    "@ant-design/icons": "^4.8.0",
+    "antd": "^5.0.7",
     "dayjs": "^1.11.7",
+    "prettier-plugin-organize-imports": "^3.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "recoil": "^0.7.6",
     "swr": "^2.0.0"
   },
   "devDependencies": {
@@ -23,6 +26,7 @@
     "@vitejs/plugin-react": "^2.0.1",
     "prettier": "2.8.1",
     "typescript": "4.9.3",
-    "vite": "^3.0.7"
+    "vite": "^3.0.7",
+    "vite-tsconfig-paths": "^4.0.3"
   }
 }
