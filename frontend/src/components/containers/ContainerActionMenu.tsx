@@ -2,6 +2,7 @@ import {
   BorderOutlined,
   CaretRightOutlined,
   CodeOutlined,
+  DeleteOutlined,
   MenuOutlined,
   PauseOutlined,
   SyncOutlined,
@@ -24,6 +25,7 @@ export const ContainerActionMenu: FC<{
     unpauseContainer,
     startContainer,
     restartContainer,
+    removeContainer,
   } = useContainerActions();
 
   const onClick =
@@ -31,14 +33,6 @@ export const ContainerActionMenu: FC<{
       setOpened(false);
       action().then(() => !noNeedToRevalidate && revalidateContainers());
     };
-
-  const display = {
-    start: state === "exited",
-    stop: state === "running",
-    restart: state === "running",
-    pause: state === "running",
-    unpause: state === "paused",
-  };
 
   const actions: Record<
     string,
@@ -74,7 +68,7 @@ export const ContainerActionMenu: FC<{
       label: "Stop",
       icon: <BorderOutlined />,
       onClick: () => stopContainer(containerId),
-      show: state === "running",
+      show: !["exited", "removing", "dead"].includes(state),
     },
     pause: {
       label: "Pause",
@@ -87,6 +81,12 @@ export const ContainerActionMenu: FC<{
       icon: <CaretRightOutlined />,
       onClick: () => unpauseContainer(containerId),
       show: state === "paused",
+    },
+    remove: {
+      label: "Remove",
+      icon: <DeleteOutlined />,
+      onClick: () => removeContainer(containerId),
+      show: true,
     },
   };
 

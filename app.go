@@ -38,49 +38,43 @@ func (a *App) ContainerPs() []container.Container {
 	return containers
 }
 
-func (a *App) ContainerStart(id string) {
+func wrapMutation(ctx context.Context, err error) bool {
+	if err != nil {
+		log.Print(err)
+		dialog.ShowErrorDialog(ctx, err)
+		return false
+	}
+	return true
+}
+
+func (a *App) ContainerStart(id string) bool {
 	log.Printf("ContainerStart, id: %s", id)
-	err := container.Start(id)
-	if err != nil {
-		log.Print(err)
-		dialog.ShowErrorDialog(a.ctx, err)
-	}
+	return wrapMutation(a.ctx, container.Start(id))
 }
 
-func (a *App) ContainerStop(id string) {
+func (a *App) ContainerStop(id string) bool {
 	log.Printf("ContainerStop, id: %s", id)
-	err := container.Stop(id)
-	if err != nil {
-		log.Print(err)
-		dialog.ShowErrorDialog(a.ctx, err)
-	}
+	return wrapMutation(a.ctx, container.Stop(id))
 }
 
-func (a *App) ContainerRestart(id string) {
+func (a *App) ContainerRestart(id string) bool {
 	log.Printf("ContainerRestart, id: %s", id)
-	err := container.Restart(id)
-	if err != nil {
-		log.Print(err)
-		dialog.ShowErrorDialog(a.ctx, err)
-	}
+	return wrapMutation(a.ctx, container.Restart(id))
 }
 
-func (a *App) ContainerPause(id string) {
+func (a *App) ContainerPause(id string) bool {
 	log.Printf("ContainerPause, id: %s", id)
-	err := container.Pause(id)
-	if err != nil {
-		log.Print(err)
-		dialog.ShowErrorDialog(a.ctx, err)
-	}
+	return wrapMutation(a.ctx, container.Pause(id))
 }
 
-func (a *App) ContainerUnpause(id string) {
+func (a *App) ContainerUnpause(id string) bool {
 	log.Printf("ContainerUnpause, id: %s", id)
-	err := container.Unpause(id)
-	if err != nil {
-		log.Print(err)
-		dialog.ShowErrorDialog(a.ctx, err)
-	}
+	return wrapMutation(a.ctx, container.Unpause(id))
+}
+
+func (a *App) ContainerRemove(id string) bool {
+	log.Printf("ContainerRemove, id: %s", id)
+	return wrapMutation(a.ctx, container.Remove(id))
 }
 
 func (a *App) ImageLs() []types.ImageSummary {
@@ -94,7 +88,7 @@ func (a *App) ImageLs() []types.ImageSummary {
 }
 
 // Menu
-func (a *App) AppMenu() *menu.Menu {
+func (a *App) appMenu() *menu.Menu {
 	AppMenu := menu.NewMenu()
 
 	FileMenu := AppMenu.AddSubmenu("File")

@@ -5,12 +5,14 @@ export const useContainerActions = () => {
   const { showSuccessToast, showErrorToast } = useToast();
 
   const requestWrapper = async (
-    res: Promise<unknown>,
+    res: Promise<boolean>,
     messages: { operation: string; successMsg: string }
   ) => {
     await res
-      .then(() => {
-        showSuccessToast(messages.successMsg);
+      .then((success) => {
+        if (success) {
+          showSuccessToast(messages.successMsg);
+        }
       })
       .catch((err) => {
         showErrorToast(messages.operation, err.message);
@@ -53,11 +55,19 @@ export const useContainerActions = () => {
     });
   };
 
+  const removeContainer = (id: string) => {
+    return requestWrapper(wails.ContainerRemove(id), {
+      operation: "remove container",
+      successMsg: "Container removed",
+    });
+  };
+
   return {
     pauseContainer,
     unpauseContainer,
     stopContainer,
     startContainer,
     restartContainer,
+    removeContainer,
   };
 };
