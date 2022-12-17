@@ -19,3 +19,7 @@ body {
 #app {
   height: 100vh;
 }
+
+h1 {
+  margin-block: 0;
+}

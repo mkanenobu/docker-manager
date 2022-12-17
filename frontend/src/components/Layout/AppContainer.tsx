@@ -25,7 +25,7 @@ export const AppContainer: FC<{ children: ReactNode }> = ({ children }) => {
       <SWRConfig value={{ revalidateOnFocus: true, suspense: true }}>
         <Layout id="app">
           <SideMenu />
-          <Layout.Content style={{ padding: "8px" }}>
+          <Layout.Content style={{ padding: "16px" }}>
             <Suspense fallback={<Spin tip="Loading..." />}>{children}</Suspense>
           </Layout.Content>
         </Layout>
