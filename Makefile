@@ -4,7 +4,7 @@ dev:
 	wails dev
 
 build:
-	wails build
+	wails build -clean
 
 gen:
 	wails generate module
