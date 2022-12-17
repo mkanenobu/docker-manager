@@ -2,8 +2,9 @@ package main
 
 import (
 	"context"
+	"docker-manager/src/container"
 	"docker-manager/src/dialog"
-	"docker-manager/src/docker"
+	"docker-manager/src/image"
 	"github.com/docker/docker/api/types"
 	"log"
 )
@@ -24,8 +25,8 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-func (a *App) ContainerPs() []docker.Container {
-	containers, err := docker.Ps()
+func (a *App) ContainerPs() []container.Container {
+	containers, err := container.Ps()
 	if err != nil {
 		log.Print(err)
 		dialog.ShowErrorDialog(a.ctx, err)
@@ -34,7 +35,7 @@ func (a *App) ContainerPs() []docker.Container {
 }
 
 func (a *App) ContainerPause(id string) {
-	err := docker.Pause(id)
+	err := container.Pause(id)
 	if err != nil {
 		log.Print(err)
 		dialog.ShowErrorDialog(a.ctx, err)
@@ -42,7 +43,7 @@ func (a *App) ContainerPause(id string) {
 }
 
 func (a *App) ContainerUnpause(id string) {
-	err := docker.Unpause(id)
+	err := container.Unpause(id)
 	if err != nil {
 		log.Print(err)
 		dialog.ShowErrorDialog(a.ctx, err)
@@ -50,7 +51,7 @@ func (a *App) ContainerUnpause(id string) {
 }
 
 func (a *App) ContainerStop(id string) {
-	err := docker.Stop(id)
+	err := container.Stop(id)
 	if err != nil {
 		log.Print(err)
 		dialog.ShowErrorDialog(a.ctx, err)
@@ -58,7 +59,7 @@ func (a *App) ContainerStop(id string) {
 }
 
 func (a *App) ImageLs() []types.ImageSummary {
-	images, err := docker.Ls()
+	images, err := image.Ls()
 	if err != nil {
 		log.Print(err)
 		dialog.ShowErrorDialog(a.ctx, err)

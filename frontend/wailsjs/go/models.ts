@@ -1,4 +1,4 @@
-export namespace docker {
+export namespace container {
 	
 	export class Container {
 	    Id: string;
@@ -7,6 +7,7 @@ export namespace docker {
 	    ImageID: string;
 	    Command: string;
 	    Created: number;
+	    Ports: types.Port[];
 	    State: string;
 	    Status: string;
 	
@@ -22,9 +23,28 @@ export namespace docker {
 	        this.ImageID = source["ImageID"];
 	        this.Command = source["Command"];
 	        this.Created = source["Created"];
+	        this.Ports = this.convertValues(source["Ports"], types.Port);
 	        this.State = source["State"];
 	        this.Status = source["Status"];
 	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
 	}
 
 }
@@ -59,6 +79,24 @@ export namespace types {
 	        this.SharedSize = source["SharedSize"];
 	        this.Size = source["Size"];
 	        this.VirtualSize = source["VirtualSize"];
+	    }
+	}
+	export class Port {
+	    IP?: string;
+	    PrivatePort: number;
+	    PublicPort?: number;
+	    Type: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new Port(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.IP = source["IP"];
+	        this.PrivatePort = source["PrivatePort"];
+	        this.PublicPort = source["PublicPort"];
+	        this.Type = source["Type"];
 	    }
 	}
 

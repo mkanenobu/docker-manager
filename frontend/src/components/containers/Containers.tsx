@@ -6,6 +6,8 @@ import type { Status } from "~/models/container";
 import { colors } from "~/theme/colors";
 import { type WailsTypes } from "~/wails";
 
+const dedupe = <T extends any = any>(arr: T[]): T[] => Array.from(new Set(arr));
+
 const stateColor = (status: Status) => {
   switch (status) {
     case "running":
@@ -18,7 +20,7 @@ const stateColor = (status: Status) => {
 };
 
 export const Containers: FC<{
-  containers: WailsTypes.docker.Container[];
+  containers: WailsTypes.container.Container[];
 }> = ({ containers }) => {
   return (
     <Table
@@ -27,10 +29,44 @@ export const Containers: FC<{
       dataSource={containers}
       columns={[
         {
+          title: "ID",
+          dataIndex: "Id",
+          key: "Id",
+          render: (id: string) => id.slice(0, 11),
+        },
+        {
           title: "Names",
           dataIndex: "Names",
           key: "Names",
-          render: (names: string[]) => names.join(" | "),
+          render: (names: string[]) => (
+            <div>
+              {names.map((name) => (
+                <Typography.Text key={name}>{name}</Typography.Text>
+              ))}
+            </div>
+          ),
+        },
+        {
+          title: "Command",
+          dataIndex: "Command",
+          key: "Command",
+          render: (command: string) => (
+            <Typography.Text code>{command}</Typography.Text>
+          ),
+        },
+        {
+          title: "Ports",
+          dataIndex: "Ports",
+          key: "Ports",
+          render: (ports: WailsTypes.types.Port[]) => (
+            <div>
+              {dedupe(
+                ports.map((port) => `${port.PublicPort}:${port.PrivatePort}`)
+              ).map((port) => (
+                <Tag>{port}</Tag>
+              ))}
+            </div>
+          ),
         },
         {
           title: "State",
@@ -44,14 +80,6 @@ export const Containers: FC<{
           title: "Status",
           dataIndex: "Status",
           key: "Status",
-        },
-        {
-          title: "Command",
-          dataIndex: "Command",
-          key: "Command",
-          render: (command: string) => (
-            <Typography.Text code>{command}</Typography.Text>
-          ),
         },
         {
           title: "Created",

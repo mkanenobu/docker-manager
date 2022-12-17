@@ -3,6 +3,7 @@ package dialog
 import (
 	"context"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
+	"log"
 )
 
 func ShowErrorDialog(ctx context.Context, err error) {
@@ -13,6 +14,6 @@ func ShowErrorDialog(ctx context.Context, err error) {
 		CancelButton: "Close",
 	})
 	if er != nil {
-		panic(er)
+		log.Fatal(er)
 	}
 }

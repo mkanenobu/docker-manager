@@ -5,4 +5,4 @@ build:
 	wails build
 
 gen:
-	wails generate
+	wails generate module
