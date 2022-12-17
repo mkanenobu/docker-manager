@@ -1,7 +1,7 @@
 export const colors = {
-  textColor: "#333333",
-  blue: "#00B7CE",
-  red: "#FF5A5F",
-  orange: "#FD7E00",
-  green: "#02AD7C",
+  black: "#333333",
+  blue: "#00b7ce",
+  red: "#fc353b",
+  orange: "#fd7e00",
+  green: "#02ad7c",
 } satisfies Record<string, string>;

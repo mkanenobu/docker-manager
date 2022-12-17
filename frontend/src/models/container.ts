@@ -1,1 +1,8 @@
-export type Status = "running" | "paused" | string;
+export type ContainerState =
+  | "running"
+  | "paused"
+  | "exited"
+  | "created"
+  | "restarting"
+  | "removing"
+  | "dead";

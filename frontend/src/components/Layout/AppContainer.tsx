@@ -1,32 +1,21 @@
-import { ConfigProvider, Layout, Spin } from "antd";
-import { Suspense, type FC, type ReactNode } from "react";
+import { ConfigProvider, Layout } from "antd";
+import { type FC, type ReactNode } from "react";
 import { SWRConfig } from "swr";
 import { SideMenu } from "~/components/Layout/SideMenu";
-
-const Loading = () => {
-  return (
-    <div
-      style={{
-        height: "100%",
-        width: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Spin tip="Loading..." size="large" />
-    </div>
-  );
-};
+import { LoadingOverlay } from "~/components/LoadingOverlay";
+import { useLoadingOverlay } from "~/hooks/loading-overlay";
 
 export const AppContainer: FC<{ children: ReactNode }> = ({ children }) => {
+  const { overlayState } = useLoadingOverlay();
+
   return (
     <ConfigProvider>
-      <SWRConfig value={{ revalidateOnFocus: true, suspense: true }}>
+      <SWRConfig value={{ revalidateOnFocus: true }}>
         <Layout id="app">
           <SideMenu />
           <Layout.Content style={{ padding: "16px" }}>
-            <Suspense fallback={<Spin tip="Loading..." />}>{children}</Suspense>
+            {children}
+            {overlayState && <LoadingOverlay />}
           </Layout.Content>
         </Layout>
       </SWRConfig>

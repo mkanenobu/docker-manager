@@ -29,7 +29,7 @@ const sizeFormatter = (num: number): string => {
 
 export const ImagesPage = () => {
   const { data } = useSWR("docker-images", wails.ImageLs, {
-    refreshInterval: 1000,
+    refreshInterval: 3000,
   });
 
   return (

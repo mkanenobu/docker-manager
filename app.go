@@ -26,6 +26,7 @@ func (a *App) startup(ctx context.Context) {
 }
 
 func (a *App) ContainerPs() []container.Container {
+	log.Print("ContainerPs")
 	containers, err := container.Ps()
 	if err != nil {
 		log.Print(err)
@@ -34,7 +35,35 @@ func (a *App) ContainerPs() []container.Container {
 	return containers
 }
 
+func (a *App) ContainerStart(id string) {
+	log.Print("ContainerStart", id)
+	err := container.Start(id)
+	if err != nil {
+		log.Print(err)
+		dialog.ShowErrorDialog(a.ctx, err)
+	}
+}
+
+func (a *App) ContainerStop(id string) {
+	log.Print("ContainerStop", id)
+	err := container.Stop(id)
+	if err != nil {
+		log.Print(err)
+		dialog.ShowErrorDialog(a.ctx, err)
+	}
+}
+
+func (a *App) ContainerRestart(id string) {
+	log.Print("ContainerRestart", id)
+	err := container.Restart(id)
+	if err != nil {
+		log.Print(err)
+		dialog.ShowErrorDialog(a.ctx, err)
+	}
+}
+
 func (a *App) ContainerPause(id string) {
+	log.Print("ContainerPause", id)
 	err := container.Pause(id)
 	if err != nil {
 		log.Print(err)
@@ -43,6 +72,7 @@ func (a *App) ContainerPause(id string) {
 }
 
 func (a *App) ContainerUnpause(id string) {
+	log.Print("ContainerUnpause", id)
 	err := container.Unpause(id)
 	if err != nil {
 		log.Print(err)
@@ -50,15 +80,8 @@ func (a *App) ContainerUnpause(id string) {
 	}
 }
 
-func (a *App) ContainerStop(id string) {
-	err := container.Stop(id)
-	if err != nil {
-		log.Print(err)
-		dialog.ShowErrorDialog(a.ctx, err)
-	}
-}
-
 func (a *App) ImageLs() []types.ImageSummary {
+	log.Print("ImageLs")
 	images, err := image.Ls()
 	if err != nil {
 		log.Print(err)

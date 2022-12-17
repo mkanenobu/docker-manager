@@ -10,6 +10,14 @@ export function ContainerPs() {
   return window['go']['main']['App']['ContainerPs']();
 }
 
+export function ContainerRestart(arg1) {
+  return window['go']['main']['App']['ContainerRestart'](arg1);
+}
+
+export function ContainerStart(arg1) {
+  return window['go']['main']['App']['ContainerStart'](arg1);
+}
+
 export function ContainerStop(arg1) {
   return window['go']['main']['App']['ContainerStop'](arg1);
 }

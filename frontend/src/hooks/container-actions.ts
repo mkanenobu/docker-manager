@@ -1,43 +1,63 @@
 import { useToast } from "~/hooks/toast-hooks";
 import { wails } from "~/wails";
 
-export const useContainerAction = () => {
+export const useContainerActions = () => {
   const { showSuccessToast, showErrorToast } = useToast();
 
-  const pauseContainer = async (id: string) => {
-    return wails
-      .ContainerPause(id)
+  const requestWrapper = async (
+    res: Promise<unknown>,
+    messages: { operation: string; successMsg: string }
+  ) => {
+    await res
       .then(() => {
-        showSuccessToast("Container started");
+        showSuccessToast(messages.successMsg);
       })
       .catch((err) => {
-        console.error(err);
-        showErrorToast("start container", err.message);
+        showErrorToast(messages.operation, err.message);
       });
+    return res;
   };
 
-  const unpauseContainer = async (id: string) => {
-    return wails
-      .ContainerUnpause(id)
-      .then(() => {
-        showSuccessToast("Container unpaused");
-      })
-      .catch((err) => {
-        console.error(err);
-        showErrorToast("unpause container", err.message);
-      });
+  const pauseContainer = (id: string) => {
+    return requestWrapper(wails.ContainerPause(id), {
+      operation: "pause container",
+      successMsg: "Container paused",
+    });
   };
 
-  const stopContainer = async (id: string) => {
-    return wails
-      .ContainerStop(id)
-      .then(() => {
-        showSuccessToast("Container stopped");
-      })
-      .catch((err) => {
-        showErrorToast("stop container", err.message);
-      });
+  const unpauseContainer = (id: string) => {
+    return requestWrapper(wails.ContainerUnpause(id), {
+      operation: "unpause container",
+      successMsg: "Container unpaused",
+    });
   };
 
-  return { pauseContainer, unpauseContainer, stopContainer };
+  const stopContainer = (id: string) => {
+    return requestWrapper(wails.ContainerStop(id), {
+      operation: "stop container",
+      successMsg: "Container stopped",
+    });
+  };
+
+  const startContainer = (id: string) => {
+    return requestWrapper(wails.ContainerStart(id), {
+      operation: "start container",
+      successMsg: "Container started",
+    });
+  };
+
+  const restartContainer = (id: string) => {
+    return requestWrapper(wails.ContainerRestart(id), {
+      operation: "restart container",
+      successMsg: "Container restarted",
+    });
+  };
+
+  return {
+    pauseContainer,
+    unpauseContainer,
+    stopContainer,
+    startContainer,
+    restartContainer,
+  };
 };

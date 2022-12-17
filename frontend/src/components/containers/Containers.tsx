@@ -1,27 +1,43 @@
 import { Table, Tag, Typography } from "antd";
 import { type FC } from "react";
+import useSWR from "swr";
+import { ContainerActionMenu } from "~/components/containers/ContainerActionMenu";
 import { unixToHuman } from "~/helpers/date-helper";
 import { capitalize } from "~/helpers/string-helper";
-import type { Status } from "~/models/container";
+import type { ContainerState } from "~/models/container";
 import { colors } from "~/theme/colors";
-import { type WailsTypes } from "~/wails";
+import { wails, type WailsTypes } from "~/wails";
 
 const dedupe = <T extends any = any>(arr: T[]): T[] => Array.from(new Set(arr));
 
-const stateColor = (status: Status) => {
-  switch (status) {
+const stateColor = (state: ContainerState) => {
+  switch (state) {
     case "running":
+    case "created":
       return colors.green;
+    case "restarting":
+      return colors.blue;
     case "paused":
+    case "removing":
       return colors.orange;
+    case "dead":
+      return colors.red;
     default:
-      return colors.textColor;
+      return colors.black;
   }
 };
 
-export const Containers: FC<{
-  containers: WailsTypes.container.Container[];
-}> = ({ containers }) => {
+export const Containers: FC = () => {
+  const { data: containers, mutate } = useSWR(
+    "docker-containers",
+    wails.ContainerPs,
+    {
+      refreshInterval: 3000,
+    }
+  );
+  const revalidateContainers = () =>
+    mutate(undefined, { optimisticData: containers });
+
   return (
     <Table
       pagination={false}
@@ -73,7 +89,9 @@ export const Containers: FC<{
           dataIndex: "State",
           key: "State",
           render: (state: string) => (
-            <Tag color={stateColor(state)}>{capitalize(state)}</Tag>
+            <Tag color={stateColor(state as ContainerState)}>
+              {capitalize(state)}
+            </Tag>
           ),
         },
         {
@@ -88,6 +106,20 @@ export const Containers: FC<{
           render: (created: number) => (
             <Typography.Text>{unixToHuman(created)}</Typography.Text>
           ),
+        },
+        {
+          title: "Action",
+          dataIndex: "Action",
+          key: "Action",
+          render: (_, record) => {
+            return (
+              <ContainerActionMenu
+                containerId={record.Id}
+                state={record.State as ContainerState}
+                revalidateContainers={revalidateContainers}
+              />
+            );
+          },
         },
       ]}
     />

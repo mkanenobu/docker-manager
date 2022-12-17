@@ -7,6 +7,10 @@ export function ContainerPause(arg1:string):Promise<void>;
 
 export function ContainerPs():Promise<Array<container.Container>>;
 
+export function ContainerRestart(arg1:string):Promise<void>;
+
+export function ContainerStart(arg1:string):Promise<void>;
+
 export function ContainerStop(arg1:string):Promise<void>;
 
 export function ContainerUnpause(arg1:string):Promise<void>;
