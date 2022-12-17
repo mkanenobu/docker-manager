@@ -6,6 +6,9 @@ import (
 	"docker-manager/src/dialog"
 	"docker-manager/src/image"
 	"github.com/docker/docker/api/types"
+	"github.com/wailsapp/wails/v2/pkg/menu"
+	"github.com/wailsapp/wails/v2/pkg/menu/keys"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"log"
 )
 
@@ -88,4 +91,25 @@ func (a *App) ImageLs() []types.ImageSummary {
 		dialog.ShowErrorDialog(a.ctx, err)
 	}
 	return images
+}
+
+// Menu
+func (a *App) AppMenu() *menu.Menu {
+	AppMenu := menu.NewMenu()
+
+	FileMenu := AppMenu.AddSubmenu("File")
+	FileMenu.AddText("Quit docker-manager", keys.CmdOrCtrl("q"), func(_ *menu.CallbackData) {
+		runtime.Quit(a.ctx)
+	})
+
+	if runtime.Environment(context.Background()).Platform == "darwin" {
+		AppMenu.Append(menu.EditMenu())
+	}
+
+	LicenseMenu := AppMenu.AddSubmenu("License")
+	LicenseMenu.AddText("Icon License", nil, func(_ *menu.CallbackData) {
+		dialog.ShowDialog(a.ctx, "Icon License", "Whale icons created by Freepik - Flaticon\nhttps://www.flaticon.com/free-icons/whale")
+	})
+
+	return AppMenu
 }

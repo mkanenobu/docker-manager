@@ -17,3 +17,15 @@ func ShowErrorDialog(ctx context.Context, err error) {
 		log.Fatal(er)
 	}
 }
+
+func ShowDialog(ctx context.Context, title string, message string) {
+	_, er := runtime.MessageDialog(ctx, runtime.MessageDialogOptions{
+		Type:         runtime.InfoDialog,
+		Title:        title,
+		Message:      message,
+		CancelButton: "Close",
+	})
+	if er != nil {
+		log.Fatal(er)
+	}
+}
