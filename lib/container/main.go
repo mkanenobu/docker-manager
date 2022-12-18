@@ -2,7 +2,7 @@ package container
 
 import (
 	"context"
-	"docker-manager/src/docker"
+	"docker-manager/lib/docker"
 	"github.com/docker/docker/api/types"
 )
 

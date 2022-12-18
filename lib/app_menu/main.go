@@ -2,7 +2,7 @@ package app_menu
 
 import (
 	"context"
-	"docker-manager/src/dialog"
+	"docker-manager/lib/dialog"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/runtime"

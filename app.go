@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
-	"docker-manager/src/container"
-	"docker-manager/src/dialog"
-	"docker-manager/src/image"
+	"docker-manager/lib/container"
+	"docker-manager/lib/dialog"
+	"docker-manager/lib/image"
 	"github.com/docker/docker/api/types"
 )
 

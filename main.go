@@ -1,7 +1,7 @@
 package main
 
 import (
-	"docker-manager/src/app_menu"
+	"docker-manager/lib/app_menu"
 	"embed"
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
