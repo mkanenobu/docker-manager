@@ -16,6 +16,8 @@ make dev
 
 Production build
 
+Generate executable to `build/bin/`
+
 ```bash
 make build
 ```
