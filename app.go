@@ -9,7 +9,6 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
-	"log"
 )
 
 // App struct
@@ -29,10 +28,10 @@ func (a *App) startup(ctx context.Context) {
 }
 
 func (a *App) ContainerPs() []container.Container {
-	log.Print("ContainerPs")
+	runtime.LogInfo(a.ctx, "container ps")
 	containers, err := container.Ps()
 	if err != nil {
-		log.Print(err)
+		runtime.LogError(a.ctx, err.Error())
 		dialog.ShowErrorDialog(a.ctx, err)
 	}
 	return containers
@@ -40,7 +39,7 @@ func (a *App) ContainerPs() []container.Container {
 
 func wrapMutation(ctx context.Context, err error) bool {
 	if err != nil {
-		log.Print(err)
+		runtime.LogError(ctx, err.Error())
 		dialog.ShowErrorDialog(ctx, err)
 		return false
 	}
@@ -48,40 +47,40 @@ func wrapMutation(ctx context.Context, err error) bool {
 }
 
 func (a *App) ContainerStart(id string) bool {
-	log.Printf("ContainerStart, id: %s", id)
+	runtime.LogInfof(a.ctx, "container start, id: %s", id)
 	return wrapMutation(a.ctx, container.Start(id))
 }
 
 func (a *App) ContainerStop(id string) bool {
-	log.Printf("ContainerStop, id: %s", id)
+	runtime.LogInfof(a.ctx, "container stop, id: %s", id)
 	return wrapMutation(a.ctx, container.Stop(id))
 }
 
 func (a *App) ContainerRestart(id string) bool {
-	log.Printf("ContainerRestart, id: %s", id)
+	runtime.LogInfof(a.ctx, "container restart, id: %s", id)
 	return wrapMutation(a.ctx, container.Restart(id))
 }
 
 func (a *App) ContainerPause(id string) bool {
-	log.Printf("ContainerPause, id: %s", id)
+	runtime.LogInfof(a.ctx, "container pause, id: %s", id)
 	return wrapMutation(a.ctx, container.Pause(id))
 }
 
 func (a *App) ContainerUnpause(id string) bool {
-	log.Printf("ContainerUnpause, id: %s", id)
+	runtime.LogInfof(a.ctx, "container unpause, id: %s", id)
 	return wrapMutation(a.ctx, container.Unpause(id))
 }
 
 func (a *App) ContainerRemove(id string) bool {
-	log.Printf("ContainerRemove, id: %s", id)
+	runtime.LogInfof(a.ctx, "container remove, id: %s", id)
 	return wrapMutation(a.ctx, container.Remove(id))
 }
 
 func (a *App) ImageLs() []types.ImageSummary {
-	log.Print("ImageLs")
+	runtime.LogInfo(a.ctx, "image ls")
 	images, err := image.Ls()
 	if err != nil {
-		log.Print(err)
+		runtime.LogError(a.ctx, err.Error())
 		dialog.ShowErrorDialog(a.ctx, err)
 	}
 	return images
