@@ -1,4 +1,5 @@
 import { atom, useRecoilState } from "recoil";
+import { runtime } from "~/wails";
 
 export type Route = "containers" | "images";
 
@@ -24,13 +25,13 @@ export const useRouter = (): Router => {
   const [history, setHistory] = useRecoilState(historyState);
 
   const push = (r: Route) => {
-    console.log("push", r);
+    runtime.LogDebug(`routing push: ${r}`);
     setHistory((p) => [...p, r]);
     setRoute(r);
   };
 
   const back = () => {
-    console.log("back");
+    runtime.LogDebug("routing back");
     setHistory((p) => p.slice(0, p.length - 1));
     setRoute(history.at(-1) ?? initialRoute);
   };

@@ -13,7 +13,7 @@ func AppMenu(ctx *context.Context) *menu.Menu {
 
 	fileMenu := appMenu.AddSubmenu("File")
 	fileMenu.AddText("Reload", keys.CmdOrCtrl("r"), func(_ *menu.CallbackData) {
-		runtime.WindowReloadApp(*ctx)
+		runtime.WindowReload(*ctx)
 	})
 	fileMenu.AddText("Quit docker-manager", keys.CmdOrCtrl("q"), func(_ *menu.CallbackData) {
 		runtime.Quit(*ctx)
