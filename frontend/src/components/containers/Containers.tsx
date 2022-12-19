@@ -27,6 +27,13 @@ const stateColor = (state: ContainerState) => {
   }
 };
 
+export const formatPort = (port: WailsTypes.types.Port) => {
+  if (port.PublicPort && port.PrivatePort) {
+    return `${port.PublicPort}:${port.PrivatePort}`;
+  }
+  return port.PublicPort;
+};
+
 export const Containers: FC = () => {
   const { data: containers, mutate } = useSWR(
     "docker-containers",
@@ -77,11 +84,9 @@ export const Containers: FC = () => {
           key: "Ports",
           render: (ports: WailsTypes.types.Port[]) => (
             <div>
-              {dedupe(
-                ports.map((port) => `${port.PublicPort}:${port.PrivatePort}`)
-              ).map((port) => (
-                <Tag key={port}>{port}</Tag>
-              ))}
+              {dedupe(ports.map((port) => formatPort(port))).map((port) => {
+                return port && <Tag key={port}>{port}</Tag>;
+              })}
             </div>
           ),
         },
