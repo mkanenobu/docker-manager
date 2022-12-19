@@ -3,7 +3,7 @@ import { type FC } from "react";
 import useSWR from "swr";
 import { ContainerActionMenu } from "~/components/containers/ContainerActionMenu";
 import { unixToHuman } from "~/helpers/date-helper";
-import { capitalize } from "~/helpers/string-helper";
+import { capitalize, shortenSha256Hash } from "~/helpers/string-helper";
 import type { ContainerState } from "~/models/container";
 import { colors } from "~/theme/colors";
 import { wails, type WailsTypes } from "~/wails";
@@ -54,7 +54,7 @@ export const Containers: FC = () => {
           title: "ID",
           dataIndex: "Id",
           key: "Id",
-          render: (id: string) => id.slice(0, 11),
+          render: (id: string) => shortenSha256Hash(id),
         },
         {
           title: "Names",

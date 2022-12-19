@@ -8,7 +8,7 @@ type Router = {
   back: () => void;
 };
 
-const initialRoute: Route = "containers";
+const initialRoute: Route = "images";
 
 const routeState = atom<Route>({
   key: "route",
