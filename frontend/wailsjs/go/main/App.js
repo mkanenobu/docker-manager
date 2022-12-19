@@ -33,3 +33,7 @@ export function ContainerUnpause(arg1) {
 export function ImageLs() {
   return window['go']['main']['App']['ImageLs']();
 }
+
+export function ImageRemove(arg1) {
+  return window['go']['main']['App']['ImageRemove'](arg1);
+}

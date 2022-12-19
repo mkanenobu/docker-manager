@@ -71,3 +71,7 @@ func (a *App) ImageLs() []types.ImageSummary {
 	}
 	return images
 }
+
+func (a *App) ImageRemove(id string) bool {
+	return wrapMutation(a.ctx, image.Remove(id))
+}

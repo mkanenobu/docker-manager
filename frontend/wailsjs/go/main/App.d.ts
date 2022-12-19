@@ -18,3 +18,5 @@ export function ContainerStop(arg1:string):Promise<boolean>;
 export function ContainerUnpause(arg1:string):Promise<boolean>;
 
 export function ImageLs():Promise<Array<types.ImageSummary>>;
+
+export function ImageRemove(arg1:string):Promise<boolean>;

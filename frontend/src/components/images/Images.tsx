@@ -1,22 +1,23 @@
 import { Table, Typography } from "antd";
 import useSWR from "swr";
+import { ImageActionMenu } from "~/components/images/ImageActionMenu";
 import { convertByteToHumanReadable } from "~/helpers/data-size-helper";
 import { unixToHuman } from "~/helpers/date-helper";
 import { shortenSha256Hash } from "~/helpers/string-helper";
 import { wails } from "~/wails";
 
-const sizeFormatter = (num: number): string => {
-  return new Intl.NumberFormat(undefined, {
+const sizeFormatter = (num: number): string =>
+  new Intl.NumberFormat(undefined, {
     style: "decimal",
     maximumSignificantDigits: 3,
     minimumSignificantDigits: 2,
   }).format(num);
-};
 
 export const Images = () => {
-  const { data } = useSWR("docker-images", () => wails.ImageLs(), {
+  const { data, mutate } = useSWR("docker-images", wails.ImageLs, {
     refreshInterval: 3000,
   });
+  const revalidateImages = () => mutate(data);
 
   return (
     <Table
@@ -67,6 +68,19 @@ export const Images = () => {
           render: (created: number) => (
             <Typography.Text>{unixToHuman(created)}</Typography.Text>
           ),
+        },
+        {
+          title: "Action",
+          dataIndex: "Action",
+          key: "Action",
+          render: (_, record) => {
+            return (
+              <ImageActionMenu
+                imageId={record.Id}
+                revalidateImages={revalidateImages}
+              />
+            );
+          },
         },
       ]}
     />
