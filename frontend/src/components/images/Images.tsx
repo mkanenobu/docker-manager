@@ -40,7 +40,7 @@ export const Images = () => {
   const { showSuccessToast } = useToast();
 
   const { data, mutate } = useSWR("images", wails.ImageLs, {
-    refreshInterval: durationHelper({ seconds: 3 }).asMilliseconds(),
+    refreshInterval: durationHelper({ seconds: 30 }).asMilliseconds(),
   });
   const revalidateImages = () => mutate(data);
 
