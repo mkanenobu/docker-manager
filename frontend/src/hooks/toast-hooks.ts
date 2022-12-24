@@ -7,12 +7,12 @@ export const useToast = () => {
       duration: 1.5,
     });
   };
-  const showErrorToast = (operation: string, errMessage?: string) => {
+  const showOperationFailedToast = (operation: string, errMessage?: string) => {
     notification.error({
       message: `Failed to ${operation}${errMessage ? `\n${errMessage}` : ""}`,
       duration: 1.5,
     });
   };
 
-  return { showSuccessToast, showErrorToast };
+  return { showSuccessToast, showOperationFailedToast };
 };

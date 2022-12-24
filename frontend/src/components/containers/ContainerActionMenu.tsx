@@ -9,14 +9,14 @@ import {
 import { useState, type FC } from "react";
 import { ActionMenu, MenuAction } from "~/components/Atom/ActionMenu";
 import { copyToClipboard } from "~/helpers/copy-to-clipboard";
+import { shortenSha256Hash } from "~/helpers/string-helper";
 import { useContainerActions } from "~/hooks/container-actions";
 import { ContainerState } from "~/models/container";
 
 export const ContainerActionMenu: FC<{
   containerId: string;
   state: ContainerState;
-  revalidateContainers: () => Promise<unknown>;
-}> = ({ containerId, state, revalidateContainers }) => {
+}> = ({ containerId, state }) => {
   const [opened, setOpened] = useState(false);
   const {
     stopContainer,
@@ -27,23 +27,19 @@ export const ContainerActionMenu: FC<{
     removeContainer,
   } = useContainerActions();
 
-  const onClick =
-    (action: () => Promise<unknown>, noNeedToRevalidate: boolean) => () => {
-      setOpened(false);
-      action().then(() => !noNeedToRevalidate && revalidateContainers());
-    };
+  const onClick = (action: () => Promise<unknown>) => () => {
+    setOpened(false);
+    return action();
+  };
 
-  const actions: Array<
-    MenuAction & { show: boolean; noNeedToRevalidate?: boolean }
-  > = [
+  const actions: Array<MenuAction & { show: boolean }> = [
     {
       key: "copyExecCommand",
       label: "Copy exec command",
       icon: <CodeOutlined />,
       onClick: () =>
-        copyToClipboard(`docker exec -it ${containerId.slice(0, 11)} `),
+        copyToClipboard(`docker exec -it ${shortenSha256Hash(containerId)} `),
       show: state === "running",
-      noNeedToRevalidate: true,
     },
     {
       key: "start",
@@ -91,7 +87,7 @@ export const ContainerActionMenu: FC<{
     .filter((action) => action.show)
     .map((action) => ({
       ...action,
-      onClick: onClick(action.onClick, !!action.noNeedToRevalidate),
+      onClick: onClick(action.onClick),
     }));
 
   return <ActionMenu opened={opened} setOpened={setOpened} actions={actions} />;

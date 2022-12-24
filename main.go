@@ -17,7 +17,7 @@ func main() {
 
 	appMenu := app_menu.AppMenu(&app.ctx)
 
-	go app.subscribeEvents()
+	go app.setContainerEventsEmitter()
 
 	// Create application with options
 	err := wails.Run(&options.App{

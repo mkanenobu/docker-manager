@@ -7,7 +7,6 @@ import (
 	"docker-manager/lib/events"
 	"docker-manager/lib/image"
 	"github.com/docker/docker/api/types"
-	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
@@ -26,18 +25,8 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-func (a *App) subscribeEvents() {
-	unsubscribeCh := make(chan bool)
-	defer (func() { close(unsubscribeCh) })()
-
-	onReceive := func(msg events.Message) {
-		runtime.EventsEmit(a.ctx, msg.Action, msg)
-	}
-	onError := func(err error) {
-		dialog.ShowErrorDialog(a.ctx, err)
-	}
-
-	events.Subscribe(unsubscribeCh, onReceive, onError)
+func (a *App) setContainerEventsEmitter() {
+	events.EmitContainerEvents(&a.ctx)
 }
 
 func wrapMutation(ctx context.Context, err error) bool {

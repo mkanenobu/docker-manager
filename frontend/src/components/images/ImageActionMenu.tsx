@@ -5,7 +5,7 @@ import { useToast } from "~/hooks/toast-hooks";
 import { wails } from "~/wails";
 
 const useImageActions = () => {
-  const { showSuccessToast, showErrorToast } = useToast();
+  const { showSuccessToast, showOperationFailedToast } = useToast();
 
   const removeImage = async (imageId: string) => {
     return wails
@@ -16,7 +16,7 @@ const useImageActions = () => {
         }
       })
       .catch((err) => {
-        showErrorToast("remove image", err.message);
+        showOperationFailedToast("remove image", err.message);
       });
   };
 

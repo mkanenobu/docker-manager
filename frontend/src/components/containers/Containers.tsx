@@ -2,8 +2,13 @@ import { Table, Tag, Typography } from "antd";
 import { type FC } from "react";
 import useSWR from "swr";
 import { ContainerActionMenu } from "~/components/containers/ContainerActionMenu";
-import { unixToHuman } from "~/helpers/date-helper";
+import { durationHelper, unixToHuman } from "~/helpers/date-helper";
 import { capitalize, shortenSha256Hash } from "~/helpers/string-helper";
+import {
+  ContainerEvent,
+  useSubscribeContainerEvents,
+} from "~/hooks/subscribe-container-events";
+import { useToast } from "~/hooks/toast-hooks";
 import type { ContainerState } from "~/models/container";
 import { colors } from "~/theme/colors";
 import { wails, type WailsTypes } from "~/wails";
@@ -27,22 +32,53 @@ const stateColor = (state: ContainerState) => {
   }
 };
 
-export const formatPort = (port: WailsTypes.types.Port) => {
+const formatPort = (port: WailsTypes.types.Port) => {
   if (port.PublicPort && port.PrivatePort) {
     return `${port.PublicPort}:${port.PrivatePort}`;
   }
   return port.PublicPort;
 };
 
+const notifyMessage = (e: ContainerEvent) => {
+  const operation: string | null = (() => {
+    switch (e.Action) {
+      case "start":
+        return "started";
+      case "pause":
+        return "paused";
+      case "unpause":
+        return "unpaused";
+      case "stop":
+        return "stopped";
+      case "destroy":
+        return "removed";
+      case "die":
+      case "kill":
+      case "create":
+        return null;
+    }
+  })();
+
+  return operation && `Container ${shortenSha256Hash(e.id)} ${operation}`;
+};
+
 export const Containers: FC = () => {
+  const { showSuccessToast } = useToast();
+
   const { data: containers, mutate } = useSWR(
     "docker-containers",
     wails.ContainerPs,
     {
-      refreshInterval: 3000,
+      refreshInterval: durationHelper({ seconds: 30 }).asMilliseconds(),
     }
   );
   const revalidateContainers = () => mutate(containers);
+
+  useSubscribeContainerEvents((e) => {
+    revalidateContainers();
+    const msg = notifyMessage(e);
+    msg && showSuccessToast(msg);
+  });
 
   return (
     <Table
@@ -114,7 +150,6 @@ export const Containers: FC = () => {
               <ContainerActionMenu
                 containerId={record.Id}
                 state={record.State as ContainerState}
-                revalidateContainers={revalidateContainers}
               />
             );
           },
