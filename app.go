@@ -73,6 +73,14 @@ func (a *App) ContainerRemove(id string) bool {
 	return wrapMutation(a.ctx, container.Remove(id))
 }
 
+func (a *App) ContainerInspect(id string) types.ContainerJSON {
+	cont, err := container.Inspect(id)
+	if err != nil {
+		dialog.ShowErrorDialog(a.ctx, err)
+	}
+	return cont
+}
+
 func (a *App) ImageLs() []types.ImageSummary {
 	images, err := image.Ls()
 	if err != nil {

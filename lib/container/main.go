@@ -71,3 +71,8 @@ func Remove(id string) error {
 	cli := docker.Client()
 	return cli.ContainerRemove(context.Background(), id, types.ContainerRemoveOptions{})
 }
+
+func Inspect(id string) (types.ContainerJSON, error) {
+	cli := docker.Client()
+	return cli.ContainerInspect(context.Background(), id)
+}

@@ -1,6 +1,6 @@
 import { atom, useRecoilState } from "recoil";
 
-export type Route = "containers" | "images";
+export type Route = "containers" | `container:${string}` | "images";
 
 type Router = {
   route: Route;

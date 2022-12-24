@@ -4,6 +4,7 @@ import useSWR from "swr";
 import { ContainerActionMenu } from "~/components/containers/ContainerActionMenu";
 import { durationHelper, formatUnixTime } from "~/helpers/date-helper";
 import { capitalize, shortenSha256Hash } from "~/helpers/string-helper";
+import { useRouter } from "~/hooks/router-hooks";
 import {
   ContainerEvent,
   useSubscribeContainerEvents,
@@ -66,6 +67,7 @@ const notifyMessage = (e: ContainerEvent) => {
 };
 
 export const Containers: FC = () => {
+  const router = useRouter();
   const { showSuccessToast } = useToast();
 
   const { data: containers, mutate } = useSWR("containers", wails.ContainerPs, {
@@ -76,6 +78,7 @@ export const Containers: FC = () => {
   useSubscribeContainerEvents((e) => {
     const msg = notifyMessage(e);
     msg && showSuccessToast(msg);
+
     // There is a time lag before their status is reflected
     setTimeout(() => {
       revalidateContainers();
@@ -87,6 +90,9 @@ export const Containers: FC = () => {
       pagination={false}
       rowKey="Id"
       dataSource={containers}
+      onRow={(record) => ({
+        onClick: () => router.push(`container:${record.Id}`),
+      })}
       columns={[
         {
           title: "ID",
@@ -154,6 +160,11 @@ export const Containers: FC = () => {
                 state={record.State as ContainerState}
               />
             );
+          },
+          onCell: () => {
+            return {
+              onClick: (e) => e.stopPropagation(),
+            };
           },
         },
       ]}
