@@ -4,8 +4,10 @@ import (
 	"context"
 	"docker-manager/lib/container"
 	"docker-manager/lib/dialog"
+	"docker-manager/lib/events"
 	"docker-manager/lib/image"
 	"github.com/docker/docker/api/types"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
@@ -24,12 +26,18 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-func (a *App) ContainerPs() []container.Container {
-	containers, err := container.Ps()
-	if err != nil {
+func (a *App) subscribeEvents() {
+	unsubscribeCh := make(chan bool)
+	defer (func() { close(unsubscribeCh) })()
+
+	onReceive := func(msg events.Message) {
+		runtime.EventsEmit(a.ctx, msg.Action, msg)
+	}
+	onError := func(err error) {
 		dialog.ShowErrorDialog(a.ctx, err)
 	}
-	return containers
+
+	events.Subscribe(unsubscribeCh, onReceive, onError)
 }
 
 func wrapMutation(ctx context.Context, err error) bool {
@@ -38,6 +46,14 @@ func wrapMutation(ctx context.Context, err error) bool {
 		return false
 	}
 	return true
+}
+
+func (a *App) ContainerPs() []container.Container {
+	containers, err := container.Ps()
+	if err != nil {
+		dialog.ShowErrorDialog(a.ctx, err)
+	}
+	return containers
 }
 
 func (a *App) ContainerStart(id string) bool {

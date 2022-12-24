@@ -8,6 +8,7 @@ export namespace container {
 	    Command: string;
 	    Created: number;
 	    Ports: types.Port[];
+	    Labels: {[key: string]: string};
 	    State: string;
 	    Status: string;
 	
@@ -24,6 +25,7 @@ export namespace container {
 	        this.Command = source["Command"];
 	        this.Created = source["Created"];
 	        this.Ports = this.convertValues(source["Ports"], types.Port);
+	        this.Labels = source["Labels"];
 	        this.State = source["State"];
 	        this.Status = source["Status"];
 	    }

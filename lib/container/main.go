@@ -7,16 +7,16 @@ import (
 )
 
 type Container struct {
-	ID      string       `json:"Id"`
-	Names   []string     `json:"Names"`
-	Image   string       `json:"Image"`
-	ImageID string       `json:"ImageID"`
-	Command string       `json:"Command"`
-	Created int64        `json:"Created"`
-	Ports   []types.Port `json:"Ports"`
-	Labels  map[string]string
-	State   string `json:"State"`
-	Status  string `json:"Status"`
+	Id      string            `json:"Id"`
+	Names   []string          `json:"Names"`
+	Image   string            `json:"Image"`
+	ImageID string            `json:"ImageID"`
+	Command string            `json:"Command"`
+	Created int64             `json:"Created"`
+	Ports   []types.Port      `json:"Ports"`
+	Labels  map[string]string `json:"Labels"`
+	State   string            `json:"State"`
+	Status  string            `json:"Status"`
 }
 
 func Ps() ([]Container, error) {
@@ -26,7 +26,7 @@ func Ps() ([]Container, error) {
 
 	for _, v := range containers {
 		cs = append(cs, Container{
-			ID:      v.ID,
+			Id:      v.ID,
 			Names:   v.Names,
 			Image:   v.Image,
 			ImageID: v.ImageID,

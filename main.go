@@ -17,6 +17,8 @@ func main() {
 
 	appMenu := app_menu.AppMenu(&app.ctx)
 
+	go app.subscribeEvents()
+
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:  "docker-manager",
