@@ -9,6 +9,7 @@ import (
 
 const (
 	ContainerEventsName = "container-events"
+	ImageEventsName     = "image-events"
 )
 
 func EmitContainerEvents(ctx *context.Context) {
@@ -17,11 +18,24 @@ func EmitContainerEvents(ctx *context.Context) {
 
 	onReceive := func(msg events.Message) {
 		runtime.EventsEmit(*ctx, ContainerEventsName, msg)
-		// dialog.ShowDialog(a.ctx, msg.Action, fmt.Sprintf("%+v", msg))
 	}
 	onError := func(err error) {
 		dialog.ShowErrorDialog(*ctx, err)
 	}
 
 	SubscribeContainerEvents(unsubscribeCh, onReceive, onError)
+}
+
+func EmitImageEvents(ctx *context.Context) {
+	unsubscribeCh := make(chan bool)
+	defer (func() { close(unsubscribeCh) })()
+
+	onReceive := func(msg events.Message) {
+		runtime.EventsEmit(*ctx, ImageEventsName, msg)
+	}
+	onError := func(err error) {
+		dialog.ShowErrorDialog(*ctx, err)
+	}
+
+	SubscribeImageEvents(unsubscribeCh, onReceive, onError)
 }

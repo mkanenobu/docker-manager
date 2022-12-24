@@ -1,7 +1,8 @@
 import { notification } from "antd";
+import type {ReactNode} from "react";
 
 export const useToast = () => {
-  const showSuccessToast = (message: string) => {
+  const showSuccessToast = (message: ReactNode) => {
     notification.success({
       message,
       duration: 1.5,

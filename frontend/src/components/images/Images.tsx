@@ -2,8 +2,13 @@ import { Table, Typography } from "antd";
 import useSWR from "swr";
 import { ImageActionMenu } from "~/components/images/ImageActionMenu";
 import { convertByteToHumanReadable } from "~/helpers/data-size-helper";
-import { unixToHuman } from "~/helpers/date-helper";
+import { durationHelper, formatUnixTime } from "~/helpers/date-helper";
 import { shortenSha256Hash } from "~/helpers/string-helper";
+import {
+  ImageEvent,
+  useSubscribeImageEvents,
+} from "~/hooks/subscribe-image-events";
+import { useToast } from "~/hooks/toast-hooks";
 import { wails } from "~/wails";
 
 const sizeFormatter = (num: number): string =>
@@ -13,11 +18,41 @@ const sizeFormatter = (num: number): string =>
     minimumSignificantDigits: 2,
   }).format(num);
 
+const notifyMessage = (e: ImageEvent) => {
+  const operation: string | null = (() => {
+    switch (e.Action) {
+      case "delete":
+        return "deleted";
+      default:
+        return null;
+    }
+  })();
+
+  return (
+    operation &&
+    `Image ${shortenSha256Hash(e.id)} has been ${operation}.\n${formatUnixTime(
+      e.time
+    )}`
+  );
+};
+
 export const Images = () => {
-  const { data, mutate } = useSWR("docker-images", wails.ImageLs, {
-    refreshInterval: 3000,
+  const { showSuccessToast } = useToast();
+
+  const { data, mutate } = useSWR("images", wails.ImageLs, {
+    refreshInterval: durationHelper({ seconds: 3 }).asMilliseconds(),
   });
   const revalidateImages = () => mutate(data);
+
+  useSubscribeImageEvents((e) => {
+    const msg = notifyMessage(e);
+    msg && showSuccessToast(msg);
+
+    // There is a time lag before their status is reflected
+    setTimeout(() => {
+      revalidateImages();
+    }, durationHelper({ seconds: 0.3 }).asMilliseconds());
+  });
 
   return (
     <Table
@@ -66,7 +101,7 @@ export const Images = () => {
           dataIndex: "Created",
           key: "Created",
           render: (created: number) => (
-            <Typography.Text>{unixToHuman(created)}</Typography.Text>
+            <Typography.Text>{formatUnixTime(created)}</Typography.Text>
           ),
         },
         {
@@ -74,12 +109,7 @@ export const Images = () => {
           dataIndex: "Action",
           key: "Action",
           render: (_, record) => {
-            return (
-              <ImageActionMenu
-                imageId={record.Id}
-                revalidateImages={revalidateImages}
-              />
-            );
+            return <ImageActionMenu imageId={record.Id} />;
           },
         },
       ]}

@@ -29,6 +29,10 @@ func (a *App) setContainerEventsEmitter() {
 	events.EmitContainerEvents(&a.ctx)
 }
 
+func (a *App) setImageEventsEmitter() {
+	events.EmitImageEvents(&a.ctx)
+}
+
 func wrapMutation(ctx context.Context, err error) bool {
 	if err != nil {
 		dialog.ShowErrorDialog(ctx, err)

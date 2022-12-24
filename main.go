@@ -18,6 +18,7 @@ func main() {
 	appMenu := app_menu.AppMenu(&app.ctx)
 
 	go app.setContainerEventsEmitter()
+	go app.setImageEventsEmitter()
 
 	// Create application with options
 	err := wails.Run(&options.App{

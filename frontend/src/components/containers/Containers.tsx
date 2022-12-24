@@ -2,7 +2,7 @@ import { Table, Tag, Typography } from "antd";
 import { type FC } from "react";
 import useSWR from "swr";
 import { ContainerActionMenu } from "~/components/containers/ContainerActionMenu";
-import { durationHelper, unixToHuman } from "~/helpers/date-helper";
+import { durationHelper, formatUnixTime } from "~/helpers/date-helper";
 import { capitalize, shortenSha256Hash } from "~/helpers/string-helper";
 import {
   ContainerEvent,
@@ -52,32 +52,34 @@ const notifyMessage = (e: ContainerEvent) => {
         return "stopped";
       case "destroy":
         return "removed";
-      case "die":
-      case "kill":
-      case "create":
+      default:
         return null;
     }
   })();
 
-  return operation && `Container ${shortenSha256Hash(e.id)} ${operation}`;
+  return (
+    operation &&
+    `Container ${shortenSha256Hash(
+      e.id
+    )} has been ${operation}.\n${formatUnixTime(e.time)}`
+  );
 };
 
 export const Containers: FC = () => {
   const { showSuccessToast } = useToast();
 
-  const { data: containers, mutate } = useSWR(
-    "docker-containers",
-    wails.ContainerPs,
-    {
-      refreshInterval: durationHelper({ seconds: 30 }).asMilliseconds(),
-    }
-  );
+  const { data: containers, mutate } = useSWR("containers", wails.ContainerPs, {
+    refreshInterval: durationHelper({ seconds: 30 }).asMilliseconds(),
+  });
   const revalidateContainers = () => mutate(containers);
 
   useSubscribeContainerEvents((e) => {
-    revalidateContainers();
     const msg = notifyMessage(e);
     msg && showSuccessToast(msg);
+    // There is a time lag before their status is reflected
+    setTimeout(() => {
+      revalidateContainers();
+    }, durationHelper({ seconds: 0.3 }).asMilliseconds());
   });
 
   return (
@@ -138,7 +140,7 @@ export const Containers: FC = () => {
           dataIndex: "Created",
           key: "Created",
           render: (created: number) => (
-            <Typography.Text>{unixToHuman(created)}</Typography.Text>
+            <Typography.Text>{formatUnixTime(created)}</Typography.Text>
           ),
         },
         {

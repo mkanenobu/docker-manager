@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { runtime } from "~/wails";
 
-export type EventAction =
+export type ContainerEventAction =
   | "pause"
   | "unpause"
   | "start"
@@ -21,7 +21,7 @@ export type ContainerEvent = {
   // container image tag?
   from: string;
   Type: "container";
-  Action: EventAction;
+  Action: ContainerEventAction;
   Actor: {
     ID: string;
     Attributes: Record<string, string>;
@@ -31,7 +31,7 @@ export type ContainerEvent = {
   timeNano: number;
 };
 
-const containerEventName = "container-events";
+const containerEventName = "container-events" as const;
 
 export const useSubscribeContainerEvents = (
   eventHandler: (e: ContainerEvent) => void
