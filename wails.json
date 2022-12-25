@@ -6,6 +6,11 @@
   "frontend:build": "npm run build",
   "frontend:dev:watcher": "npm run dev",
   "frontend:dev:serverUrl": "auto",
+  "info": {
+    "productName": "Docker Manager",
+    "productVersion": "0.0.1",
+    "copyright": "Copyright 2023 mkanenobu"
+  },
   "author": {
     "name": "mkanenobu",
     "email": "mitsuru.kanenobu@gmail.com"
