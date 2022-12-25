@@ -73,7 +73,7 @@ func (a *App) ContainerRemove(id string) bool {
 	return wrapMutation(a.ctx, container.Remove(id))
 }
 
-func (a *App) ContainerInspect(id string) types.ContainerJSON {
+func (a *App) ContainerInspect(id string) container.ContainerDetail {
 	cont, err := container.Inspect(id)
 	if err != nil {
 		dialog.ShowErrorDialog(a.ctx, err)

@@ -5,6 +5,7 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+// ShowErrorDialog TODO: Emit error event and show dialog on Frontend instead of showing dialog on Go
 func ShowErrorDialog(ctx context.Context, err error) {
 	_, er := runtime.MessageDialog(ctx, runtime.MessageDialogOptions{
 		Type:         runtime.ErrorDialog,

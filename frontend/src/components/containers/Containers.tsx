@@ -1,9 +1,10 @@
 import { Table, Tag, Typography } from "antd";
 import { type FC } from "react";
 import useSWR from "swr";
+import { ContainerStatusTag } from "~/components/Atom/ContainerStatusTag";
 import { ContainerActionMenu } from "~/components/containers/ContainerActionMenu";
 import { durationHelper, formatUnixTime } from "~/helpers/date-helper";
-import { capitalize, shortenSha256Hash } from "~/helpers/string-helper";
+import { shortenSha256Hash } from "~/helpers/string-helper";
 import { useRouter } from "~/hooks/router-hooks";
 import {
   ContainerEvent,
@@ -13,6 +14,7 @@ import { useToast } from "~/hooks/toast-hooks";
 import type { ContainerState } from "~/models/container";
 import { colors } from "~/theme/colors";
 import { wails, type WailsTypes } from "~/wails";
+import styles from "./Containers.module.css";
 
 const dedupe = <T extends any = any>(arr: T[]): T[] => Array.from(new Set(arr));
 
@@ -90,6 +92,7 @@ export const Containers: FC = () => {
       pagination={false}
       rowKey="Id"
       dataSource={containers}
+      rowClassName={styles.row}
       onRow={(record) => ({
         onClick: () => router.push(`container:${record.Id}`),
       })}
@@ -118,11 +121,12 @@ export const Containers: FC = () => {
           title: "Ports",
           dataIndex: "Ports",
           key: "Ports",
-          render: (ports: WailsTypes.types.Port[]) => (
+          render: (ports: WailsTypes.types.Port[] | undefined) => (
             <div>
-              {dedupe(ports.map((port) => formatPort(port))).map((port) => {
-                return port && <Tag key={port}>{port}</Tag>;
-              })}
+              {ports &&
+                dedupe(ports.map((port) => formatPort(port))).map((port) => {
+                  return port && <Tag key={port}>{port}</Tag>;
+                })}
             </div>
           ),
         },
@@ -130,11 +134,7 @@ export const Containers: FC = () => {
           title: "State",
           dataIndex: "State",
           key: "State",
-          render: (state: string) => (
-            <Tag color={stateColor(state as ContainerState)}>
-              {capitalize(state)}
-            </Tag>
-          ),
+          render: (state: ContainerState) => <ContainerStatusTag state={state} />,
         },
         {
           title: "Status",

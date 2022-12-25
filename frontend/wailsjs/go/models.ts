@@ -7,8 +7,8 @@ export namespace container {
 	    ImageID: string;
 	    Command: string;
 	    Created: number;
-	    Ports: types.Port[];
-	    Labels: {[key: string]: string};
+	    Ports?: types.Port[];
+	    Labels?: {[key: string]: string};
 	    State: string;
 	    Status: string;
 	
@@ -48,36 +48,91 @@ export namespace container {
 		    return a;
 		}
 	}
-
-}
-
-export namespace types {
-	
-	export class ContainerNode {
-	    IP: string;
+	export class HostConfig {
+	    Dns: string[];
+	    DnsOptions: string[];
+	    DnsSearch: string[];
+	    CpuShares: number;
+	    NanoCpus: number;
+	    CpuPeriod: number;
+	    CpuQuota: number;
+	    CpuRealtimePeriod: number;
+	    CpuRealtimeRuntime: number;
+	    CpuCount: number;
+	    CpuPercent: number;
 	
 	    static createFrom(source: any = {}) {
-	        return new ContainerNode(source);
+	        return new HostConfig(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.IP = source["IP"];
+	        this.Dns = source["Dns"];
+	        this.DnsOptions = source["DnsOptions"];
+	        this.DnsSearch = source["DnsSearch"];
+	        this.CpuShares = source["CpuShares"];
+	        this.NanoCpus = source["NanoCpus"];
+	        this.CpuPeriod = source["CpuPeriod"];
+	        this.CpuQuota = source["CpuQuota"];
+	        this.CpuRealtimePeriod = source["CpuRealtimePeriod"];
+	        this.CpuRealtimeRuntime = source["CpuRealtimeRuntime"];
+	        this.CpuCount = source["CpuCount"];
+	        this.CpuPercent = source["CpuPercent"];
 	    }
 	}
-	export class ContainerJSON {
+	export class ContainerDetail {
 	    Id: string;
-	    // Go type: ContainerNode
-	    "?"?: any;
+	    Created: string;
+	    Path: string;
+	    Args: string[];
+	    // Go type: types.ContainerState
+	    State?: any;
+	    Image: string;
+	    ResolvConfPath: string;
+	    HostnamePath: string;
+	    HostsPath: string;
+	    LogPath: string;
+	    Name: string;
+	    RestartCount: number;
+	    Driver: string;
+	    Platform: string;
+	    MountLabel: string;
+	    ProcessLabel: string;
+	    AppArmorProfile: string;
+	    ExecIDs: string[];
+	    HostConfig?: HostConfig;
+	    GraphDriver: types.GraphDriverData;
+	    SizeRw?: number;
+	    SideRootFs?: number;
 	
 	    static createFrom(source: any = {}) {
-	        return new ContainerJSON(source);
+	        return new ContainerDetail(source);
 	    }
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.Id = source["Id"];
-	        this[""] = this.convertValues(source[""], null);
+	        this.Created = source["Created"];
+	        this.Path = source["Path"];
+	        this.Args = source["Args"];
+	        this.State = this.convertValues(source["State"], null);
+	        this.Image = source["Image"];
+	        this.ResolvConfPath = source["ResolvConfPath"];
+	        this.HostnamePath = source["HostnamePath"];
+	        this.HostsPath = source["HostsPath"];
+	        this.LogPath = source["LogPath"];
+	        this.Name = source["Name"];
+	        this.RestartCount = source["RestartCount"];
+	        this.Driver = source["Driver"];
+	        this.Platform = source["Platform"];
+	        this.MountLabel = source["MountLabel"];
+	        this.ProcessLabel = source["ProcessLabel"];
+	        this.AppArmorProfile = source["AppArmorProfile"];
+	        this.ExecIDs = source["ExecIDs"];
+	        this.HostConfig = this.convertValues(source["HostConfig"], HostConfig);
+	        this.GraphDriver = this.convertValues(source["GraphDriver"], types.GraphDriverData);
+	        this.SizeRw = source["SizeRw"];
+	        this.SideRootFs = source["SideRootFs"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -97,6 +152,25 @@ export namespace types {
 		    }
 		    return a;
 		}
+	}
+
+}
+
+export namespace types {
+	
+	export class GraphDriverData {
+	    Data: {[key: string]: string};
+	    Name: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new GraphDriverData(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Data = source["Data"];
+	        this.Name = source["Name"];
+	    }
 	}
 	export class ImageSummary {
 	    Containers: number;
