@@ -34,6 +34,10 @@ export function ContainerUnpause(arg1) {
   return window['go']['main']['App']['ContainerUnpause'](arg1);
 }
 
+export function ImageInspect(arg1) {
+  return window['go']['main']['App']['ImageInspect'](arg1);
+}
+
 export function ImageLs() {
   return window['go']['main']['App']['ImageLs']();
 }

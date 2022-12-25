@@ -94,7 +94,7 @@ export const Containers: FC = () => {
       dataSource={containers}
       rowClassName={styles.row}
       onRow={(record) => ({
-        onClick: () => router.push(`container:${record.Id}`),
+        onClick: () => router.push(`container/${record.Id}`),
       })}
       columns={[
         {

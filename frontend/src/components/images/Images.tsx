@@ -4,12 +4,14 @@ import { ImageActionMenu } from "~/components/images/ImageActionMenu";
 import { convertByteToHumanReadable } from "~/helpers/data-size-helper";
 import { durationHelper, formatUnixTime } from "~/helpers/date-helper";
 import { shortenSha256Hash } from "~/helpers/string-helper";
+import { useRouter } from "~/hooks/router-hooks";
 import {
   ImageEvent,
   useSubscribeImageEvents,
 } from "~/hooks/subscribe-image-events";
 import { useToast } from "~/hooks/toast-hooks";
 import { wails } from "~/wails";
+import styles from "./Images.module.css";
 
 const sizeFormatter = (num: number): string =>
   new Intl.NumberFormat(undefined, {
@@ -38,6 +40,7 @@ const notifyMessage = (e: ImageEvent) => {
 
 export const Images = () => {
   const { showSuccessToast } = useToast();
+  const router = useRouter();
 
   const { data, mutate } = useSWR("images", wails.ImageLs, {
     refreshInterval: durationHelper({ seconds: 30 }).asMilliseconds(),
@@ -59,6 +62,12 @@ export const Images = () => {
       pagination={false}
       rowKey="Id"
       dataSource={data}
+      rowClassName={styles.row}
+      onRow={(record) => {
+        return {
+          onClick: () => router.push(`image/${record.Id}`),
+        };
+      }}
       columns={[
         {
           title: "ID",
@@ -111,6 +120,9 @@ export const Images = () => {
           render: (_, record) => {
             return <ImageActionMenu imageId={record.Id} />;
           },
+          onCell: () => ({
+            onClick: (e) => e.stopPropagation(),
+          }),
         },
       ]}
     />

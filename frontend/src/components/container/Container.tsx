@@ -55,7 +55,7 @@ const ContainerDescription: FC<{
 };
 
 export const Container: FC<{ id: string }> = ({ id }) => {
-  const { data: container } = useSWR(`container-${id}`, () =>
+  const { data: container } = useSWR(`container/${id}`, () =>
     wails.ContainerInspect(id)
   );
 

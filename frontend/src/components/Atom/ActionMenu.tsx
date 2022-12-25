@@ -9,7 +9,7 @@ export const ActionMenu: FC<{
   items: MenuProps["items"];
 }> = ({ items }) => {
   return (
-    <Dropdown menu={{ items }}>
+    <Dropdown menu={{ items }} trigger={["click"]}>
       <Button type="text" icon={<MoreOutlined />} />
     </Dropdown>
   );

@@ -92,3 +92,11 @@ func (a *App) ImageLs() []types.ImageSummary {
 func (a *App) ImageRemove(id string) bool {
 	return wrapMutation(a.ctx, image.Remove(id))
 }
+
+func (a *App) ImageInspect(id string) image.ImageDetail {
+	img, err := image.Inspect(id)
+	if err != nil {
+		dialog.ShowErrorDialog(a.ctx, err)
+	}
+	return img
+}

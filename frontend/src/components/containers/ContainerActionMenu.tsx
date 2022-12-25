@@ -11,6 +11,7 @@ import { ActionMenu, MenuAction } from "~/components/Atom/ActionMenu";
 import { copyToClipboard } from "~/helpers/copy-to-clipboard";
 import { shortenSha256Hash } from "~/helpers/string-helper";
 import { useContainerActions } from "~/hooks/container-actions";
+import { useToast } from "~/hooks/toast-hooks";
 import { ContainerState } from "~/models/container";
 
 export const ContainerActionMenu: FC<{
@@ -25,6 +26,7 @@ export const ContainerActionMenu: FC<{
     restartContainer,
     removeContainer,
   } = useContainerActions();
+  const { showSuccessToast } = useToast();
 
   const onClick = (action: () => Promise<unknown>) => () => {
     return action();
@@ -36,7 +38,11 @@ export const ContainerActionMenu: FC<{
       label: "Copy exec command",
       icon: <CodeOutlined />,
       onClick: () =>
-        copyToClipboard(`docker exec -it ${shortenSha256Hash(containerId)} `),
+        copyToClipboard(
+          `docker exec -it ${shortenSha256Hash(containerId)} `
+        ).then(() => {
+          showSuccessToast("Copied exec command to clipboard");
+        }),
       show: state === "running",
     },
     {

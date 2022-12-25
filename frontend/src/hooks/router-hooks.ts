@@ -1,6 +1,11 @@
+import { useEffect } from "react";
 import { atom, useRecoilState } from "recoil";
 
-export type Route = "containers" | `container:${string}` | "images";
+export type Route =
+  | "containers"
+  | `container/${string}`
+  | "images"
+  | `image/${string}`;
 
 type Router = {
   route: Route;
@@ -33,4 +38,24 @@ export const useRouter = (): Router => {
     push,
     back,
   };
+};
+
+export const useRoutingKeyboardShortcuts = () => {
+  const { push, back } = useRouter();
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.getModifierState("Alt")) {
+        if (e.key === "ArrowLeft") {
+          back();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [push, back]);
 };

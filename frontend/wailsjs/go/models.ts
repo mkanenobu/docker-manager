@@ -156,6 +156,75 @@ export namespace container {
 
 }
 
+export namespace image {
+	
+	export class ImageDetail {
+	    Id: string;
+	    RepoTags: string[];
+	    RepoDigests: string[];
+	    Parent: string;
+	    Comment: string;
+	    Created: string;
+	    Container: string;
+	    // Go type: container.Config
+	    ContainerConfig?: any;
+	    DockerVersion: string;
+	    Author: string;
+	    // Go type: container.Config
+	    Config?: any;
+	    Architecture: string;
+	    Variant?: string;
+	    Os: string;
+	    OsVersion?: string;
+	    Size: number;
+	    VirtualSize: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new ImageDetail(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.Id = source["Id"];
+	        this.RepoTags = source["RepoTags"];
+	        this.RepoDigests = source["RepoDigests"];
+	        this.Parent = source["Parent"];
+	        this.Comment = source["Comment"];
+	        this.Created = source["Created"];
+	        this.Container = source["Container"];
+	        this.ContainerConfig = this.convertValues(source["ContainerConfig"], null);
+	        this.DockerVersion = source["DockerVersion"];
+	        this.Author = source["Author"];
+	        this.Config = this.convertValues(source["Config"], null);
+	        this.Architecture = source["Architecture"];
+	        this.Variant = source["Variant"];
+	        this.Os = source["Os"];
+	        this.OsVersion = source["OsVersion"];
+	        this.Size = source["Size"];
+	        this.VirtualSize = source["VirtualSize"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
 export namespace types {
 	
 	export class GraphDriverData {

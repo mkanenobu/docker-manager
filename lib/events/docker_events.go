@@ -42,7 +42,6 @@ func NewEventsSubscriber(filters filters.Args) EventSubscriber {
 func SubscribeContainerEvents(unsubscribeCh chan bool, onReceive func(msg Message), onError func(err error)) {
 	f := filters.NewArgs(
 		filters.Arg("type", "container"),
-		filters.Arg("scope", "local"),
 	)
 	NewEventsSubscriber(f)(unsubscribeCh, onReceive, onError)
 }
@@ -50,7 +49,6 @@ func SubscribeContainerEvents(unsubscribeCh chan bool, onReceive func(msg Messag
 func SubscribeImageEvents(unsubscribeCh chan bool, onReceive func(msg Message), onError func(err error)) {
 	f := filters.NewArgs(
 		filters.Arg("type", "image"),
-		filters.Arg("scope", "local"),
 	)
 	NewEventsSubscriber(f)(unsubscribeCh, onReceive, onError)
 }
