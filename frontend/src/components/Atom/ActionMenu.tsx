@@ -1,8 +1,10 @@
 import { MoreOutlined } from "@ant-design/icons";
 import { Button, Dropdown, type MenuProps } from "antd";
+import type { ItemType } from "antd/lib/menu/hooks/useItems";
 import { type FC } from "react";
 
-export type MenuAction = NonNullable<MenuProps["items"]>[number];
+export type MenuAction = ItemType;
+
 export const ActionMenu: FC<{
   items: MenuProps["items"];
 }> = ({ items }) => {
