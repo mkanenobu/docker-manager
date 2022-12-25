@@ -6,7 +6,7 @@ import {
   PauseOutlined,
   SyncOutlined,
 } from "@ant-design/icons";
-import { useState, type FC } from "react";
+import { type FC } from "react";
 import { ActionMenu, MenuAction } from "~/components/Atom/ActionMenu";
 import { copyToClipboard } from "~/helpers/copy-to-clipboard";
 import { shortenSha256Hash } from "~/helpers/string-helper";
@@ -17,7 +17,6 @@ export const ContainerActionMenu: FC<{
   containerId: string;
   state: ContainerState;
 }> = ({ containerId, state }) => {
-  const [opened, setOpened] = useState(false);
   const {
     stopContainer,
     pauseContainer,
@@ -28,11 +27,10 @@ export const ContainerActionMenu: FC<{
   } = useContainerActions();
 
   const onClick = (action: () => Promise<unknown>) => () => {
-    setOpened(false);
     return action();
   };
 
-  const actions: Array<MenuAction & { show: boolean }> = [
+  const actions: MenuAction[] = [
     {
       key: "copyExecCommand",
       label: "Copy exec command",
@@ -90,5 +88,5 @@ export const ContainerActionMenu: FC<{
       onClick: onClick(action.onClick),
     }));
 
-  return <ActionMenu opened={opened} setOpened={setOpened} actions={actions} />;
+  return <ActionMenu items={actions} />;
 };

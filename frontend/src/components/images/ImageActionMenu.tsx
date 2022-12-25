@@ -1,5 +1,5 @@
 import { DeleteOutlined } from "@ant-design/icons";
-import { useState, type FC } from "react";
+import { type FC } from "react";
 import { ActionMenu } from "~/components/Atom/ActionMenu";
 import { useToast } from "~/hooks/toast-hooks";
 import { wails } from "~/wails";
@@ -19,22 +19,16 @@ const useImageActions = () => {
 export const ImageActionMenu: FC<{
   imageId: string;
 }> = ({ imageId }) => {
-  const [opened, setOpened] = useState(false);
   const { removeImage } = useImageActions();
 
   return (
     <ActionMenu
-      opened={opened}
-      setOpened={setOpened}
-      actions={[
+      items={[
         {
           key: "remove",
           label: "Remove",
           icon: <DeleteOutlined />,
-          onClick: () => {
-            setOpened(false);
-            removeImage(imageId);
-          },
+          onClick: () => removeImage(imageId),
         },
       ]}
     />
