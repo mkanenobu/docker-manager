@@ -91,6 +91,7 @@ export const Containers: FC = () => {
     <Table
       pagination={false}
       rowKey="Id"
+      // scroll={{ x: 1500 }}
       dataSource={containers}
       rowClassName={styles.row}
       onRow={(record) => ({
@@ -101,7 +102,16 @@ export const Containers: FC = () => {
           title: "ID",
           dataIndex: "Id",
           key: "Id",
-          render: (id: string) => shortenSha256Hash(id),
+          render: (id: string) => (
+            <div style={{ width: "8rem" }}>
+              <Typography.Text
+                copyable
+                style={{ wordBreak: "keep-all", fontFamily: "monospace" }}
+              >
+                {shortenSha256Hash(id)}
+              </Typography.Text>
+            </div>
+          ),
         },
         {
           title: "Names",
@@ -134,25 +144,29 @@ export const Containers: FC = () => {
           title: "State",
           dataIndex: "State",
           key: "State",
-          render: (state: ContainerState) => <ContainerStatusTag state={state} />,
+          render: (state: ContainerState) => (
+            <ContainerStatusTag state={state} />
+          ),
         },
         {
           title: "Status",
           dataIndex: "Status",
           key: "Status",
         },
-        {
-          title: "Created",
-          dataIndex: "Created",
-          key: "Created",
-          render: (created: number) => (
-            <Typography.Text>{formatUnixTime(created)}</Typography.Text>
-          ),
-        },
+        // {
+        //   title: "Created",
+        //   dataIndex: "Created",
+        //   key: "Created",
+        //   render: (created: number) => (
+        //     <Typography.Text>{formatUnixTime(created)}</Typography.Text>
+        //   ),
+        // },
         {
           title: "Action",
           dataIndex: "Action",
           key: "Action",
+          fixed: "right",
+          width: 80,
           render: (_, record) => {
             return (
               <ContainerActionMenu

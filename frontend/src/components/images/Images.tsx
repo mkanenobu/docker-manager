@@ -73,7 +73,16 @@ export const Images = () => {
           title: "ID",
           dataIndex: "Id",
           key: "Id",
-          render: (id: string) => shortenSha256Hash(id),
+          render: (id: string) => (
+            <div style={{ width: "8rem" }}>
+              <Typography.Text
+                copyable
+                style={{ wordBreak: "keep-all", fontFamily: "monospace" }}
+              >
+                {shortenSha256Hash(id)}
+              </Typography.Text>
+            </div>
+          ),
         },
         {
           title: "Repository",
