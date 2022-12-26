@@ -1,5 +1,6 @@
-import { Empty } from "antd";
+import { ConfigProvider, Empty } from "antd";
 import { RecoilRoot } from "recoil";
+import { SWRConfig } from "swr";
 import { useRouter, useRoutingKeyboardShortcuts } from "~/hooks/router-hooks";
 import { ContainerPage } from "~/pages/Container";
 import { ImagePage } from "~/pages/Image";
@@ -31,9 +32,13 @@ const Router = () => {
 export const App = () => {
   return (
     <RecoilRoot>
-      <AppContainer>
-        <Router />
-      </AppContainer>
+      <ConfigProvider>
+        <SWRConfig value={{ revalidateOnFocus: true, suspense: true }}>
+          <AppContainer>
+            <Router />
+          </AppContainer>
+        </SWRConfig>
+      </ConfigProvider>
     </RecoilRoot>
   );
 };
