@@ -38,6 +38,7 @@ body {
 
 #app {
   white-space: pre-wrap;
+  height: 100vh;
 }
 
 h1 {
