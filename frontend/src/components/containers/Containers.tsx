@@ -1,4 +1,5 @@
 import { Table, Tag, Typography } from "antd";
+import debounce from "lodash.debounce";
 import { type FC } from "react";
 import useSWR from "swr";
 import { ContainerStatusTag } from "~/components/Atom/ContainerStatusTag";
@@ -75,16 +76,19 @@ export const Containers: FC = () => {
   const { data: containers, mutate } = useSWR("containers", wails.ContainerPs, {
     refreshInterval: durationHelper({ seconds: 30 }).asMilliseconds(),
   });
-  const revalidateContainers = () => mutate(containers);
+
+  const revalidateContainers = debounce(() => {
+    // There is a time lag before their status is reflected
+    setTimeout(() => {
+      mutate(() => containers);
+    }, durationHelper({ seconds: 0.2 }).asMilliseconds());
+  }, durationHelper({ seconds: 0.2 }).asMilliseconds());
 
   useSubscribeContainerEvents((e) => {
     const msg = notifyMessage(e);
     msg && showSuccessToast(msg);
 
-    // There is a time lag before their status is reflected
-    setTimeout(() => {
-      revalidateContainers();
-    }, durationHelper({ seconds: 0.3 }).asMilliseconds());
+    revalidateContainers();
   });
 
   return (

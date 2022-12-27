@@ -1,4 +1,5 @@
 import { Table, Typography } from "antd";
+import debounce from "lodash.debounce";
 import useSWR from "swr";
 import { ImageActionMenu } from "~/components/images/ImageActionMenu";
 import { convertByteToHumanReadable } from "~/helpers/data-size-helper";
@@ -45,16 +46,18 @@ export const Images = () => {
   const { data, mutate } = useSWR("images", wails.ImageLs, {
     refreshInterval: durationHelper({ seconds: 30 }).asMilliseconds(),
   });
-  const revalidateImages = () => mutate(data);
+  const revalidateImages = debounce(() => {
+    // There is a time lag before their status is reflected
+    setTimeout(() => {
+      mutate(() => data);
+    }, durationHelper({ seconds: 0.2 }).asMilliseconds());
+  }, durationHelper({ seconds: 0.2 }).asMilliseconds());
 
   useSubscribeImageEvents((e) => {
     const msg = notifyMessage(e);
     msg && showSuccessToast(msg);
 
-    // There is a time lag before their status is reflected
-    setTimeout(() => {
-      revalidateImages();
-    }, durationHelper({ seconds: 0.3 }).asMilliseconds());
+    revalidateImages();
   });
 
   return (
