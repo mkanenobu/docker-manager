@@ -5,6 +5,7 @@ import useSWR from "swr";
 import { defaultDateTimeFormat } from "~/helpers/date-helper";
 import { shortenSha256Hash } from "~/helpers/string-helper";
 import { wails } from "~/wails";
+import styles from "./Container.module.css"
 
 const formatObjectDateTimeField = (obj: Record<string, any>) => {
   for (const [key, value] of Object.entries(obj)) {
@@ -69,13 +70,7 @@ export const Container: FC<{ id: string }> = ({ id }) => {
           <Divider />
           <Collapse>
             <Collapse.Panel header="Raw JSON" key={"1"}>
-              <div
-                style={{
-                  fontFamily: "monospace",
-                  whiteSpace: "pre-wrap",
-                  overflowWrap: "anywhere",
-                }}
-              >
+              <div className={styles.rawJson}>
                 {JSON.stringify(container, undefined, 2)}
               </div>
             </Collapse.Panel>

@@ -77,11 +77,8 @@ export const Images = () => {
           dataIndex: "Id",
           key: "Id",
           render: (id: string) => (
-            <div style={{ width: "8rem" }}>
-              <Typography.Text
-                copyable
-                style={{ wordBreak: "keep-all", fontFamily: "monospace" }}
-              >
+            <div className={styles.id}>
+              <Typography.Text copyable>
                 {shortenSha256Hash(id)}
               </Typography.Text>
             </div>

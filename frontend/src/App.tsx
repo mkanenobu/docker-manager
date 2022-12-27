@@ -32,7 +32,7 @@ const Router = () => {
 export const App = () => {
   return (
     <RecoilRoot>
-      <ConfigProvider>
+      <ConfigProvider theme={{ token: { fontFamily: "" } }}>
         <SWRConfig value={{ revalidateOnFocus: true, suspense: true }}>
           <AppContainer>
             <Router />

@@ -2,6 +2,7 @@ import { Card, Collapse, Descriptions, Divider, Empty, Typography } from "antd";
 import { type FC } from "react";
 import useSWR from "swr";
 import { wails } from "~/wails";
+import styles from "./Image.module.css";
 
 const ImageDescription: FC<{
   image: Awaited<ReturnType<typeof wails.ImageInspect>>;
@@ -34,13 +35,7 @@ export const Image: FC<{ id: string }> = ({ id }) => {
           <Divider />
           <Collapse>
             <Collapse.Panel header="Raw JSON" key={"1"}>
-              <div
-                style={{
-                  fontFamily: "monospace",
-                  whiteSpace: "pre-wrap",
-                  overflowWrap: "anywhere",
-                }}
-              >
+              <div className={styles.rawJson}>
                 {JSON.stringify(image, undefined, 2)}
               </div>
             </Collapse.Panel>

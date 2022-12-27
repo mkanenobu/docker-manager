@@ -24,7 +24,7 @@ export const AppContainer: FC<{ children: ReactNode }> = ({ children }) => {
   const { overlayState } = useLoadingOverlay();
 
   return (
-    <Layout id="app">
+    <Layout id="app" style={{ fontFamily: "unset" }}>
       <SideMenu />
       <Layout.Content style={{ padding: "16px", overflow: "scroll" }}>
         <Suspense fallback={<Loading />}>{children}</Suspense>

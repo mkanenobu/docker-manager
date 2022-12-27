@@ -1,3 +1,9 @@
 .row {
   cursor: pointer;
 }
+
+.id {
+  width: 8rem;
+  word-break: keep-all;
+  font-family: "RobotoMono", monospace;
+}
