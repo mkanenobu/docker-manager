@@ -45,3 +45,11 @@ export function ImageLs() {
 export function ImageRemove(arg1) {
   return window['go']['main']['App']['ImageRemove'](arg1);
 }
+
+export function SaveSettings(arg1) {
+  return window['go']['main']['App']['SaveSettings'](arg1);
+}
+
+export function Settings() {
+  return window['go']['main']['App']['Settings']();
+}

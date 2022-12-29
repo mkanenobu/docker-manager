@@ -5,7 +5,8 @@ export type Route =
   | "containers"
   | `container/${string}`
   | "images"
-  | `image/${string}`;
+  | `image/${string}`
+  | "settings";
 
 type Router = {
   route: Route;

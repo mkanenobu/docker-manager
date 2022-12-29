@@ -3,6 +3,7 @@
 import {container} from '../models';
 import {image} from '../models';
 import {types} from '../models';
+import {settings} from '../models';
 
 export function ContainerInspect(arg1:string):Promise<container.ContainerDetail>;
 
@@ -25,3 +26,7 @@ export function ImageInspect(arg1:string):Promise<image.ImageDetail>;
 export function ImageLs():Promise<Array<types.ImageSummary>>;
 
 export function ImageRemove(arg1:string):Promise<boolean>;
+
+export function SaveSettings(arg1:settings.Settings):Promise<void>;
+
+export function Settings():Promise<settings.Settings>;

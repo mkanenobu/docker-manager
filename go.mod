@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/docker/docker v20.10.21+incompatible
 	github.com/wailsapp/wails/v2 v2.2.0
+	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
@@ -46,7 +47,6 @@ require (
 	golang.org/x/text v0.5.0 // indirect
 	golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac // indirect
 	golang.org/x/tools v0.4.0 // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gotest.tools/v3 v3.0.3 // indirect
 )
 

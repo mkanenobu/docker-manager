@@ -3,6 +3,7 @@ package app_menu
 import (
 	"context"
 	"docker-manager/lib/dialog"
+	"docker-manager/lib/events"
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -14,6 +15,9 @@ func AppMenu(ctx *context.Context) *menu.Menu {
 	fileMenu := appMenu.AddSubmenu("File")
 	fileMenu.AddText("Reload", keys.CmdOrCtrl("r"), func(_ *menu.CallbackData) {
 		runtime.WindowReload(*ctx)
+	})
+	fileMenu.AddText("Settings", keys.CmdOrCtrl(","), func(_ *menu.CallbackData) {
+		events.EmitOpenSettingsEvent(*ctx)
 	})
 	fileMenu.AddText("Quit docker-manager", keys.CmdOrCtrl("q"), func(_ *menu.CallbackData) {
 		runtime.Quit(*ctx)

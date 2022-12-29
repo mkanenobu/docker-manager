@@ -6,6 +6,7 @@ import (
 	"docker-manager/lib/dialog"
 	"docker-manager/lib/events"
 	"docker-manager/lib/image"
+	"docker-manager/lib/settings"
 	"github.com/docker/docker/api/types"
 )
 
@@ -99,4 +100,12 @@ func (a *App) ImageInspect(id string) image.ImageDetail {
 		dialog.ShowErrorDialog(a.ctx, err)
 	}
 	return img
+}
+
+func (a *App) Settings() settings.Settings {
+	return *settings.GetSettings()
+}
+
+func (a *App) SaveSettings(s settings.Settings) {
+	settings.SaveSettings(&s)
 }

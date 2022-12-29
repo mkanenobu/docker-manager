@@ -3,6 +3,7 @@ import { Suspense, type FC, type ReactNode } from "react";
 import { SideMenu } from "~/components/Layout/SideMenu";
 import { LoadingOverlay } from "~/components/LoadingOverlay";
 import { useLoadingOverlay } from "~/hooks/loading-overlay";
+import { useSubscribeOpenSettingsEvent } from "~/hooks/subscribe-open-settings-event";
 import styles from "./AppContainer.module.css";
 
 const Loading = () => {
@@ -15,6 +16,7 @@ const Loading = () => {
 
 export const AppContainer: FC<{ children: ReactNode }> = ({ children }) => {
   const { overlayState } = useLoadingOverlay();
+  useSubscribeOpenSettingsEvent();
 
   return (
     <Layout id="app">
