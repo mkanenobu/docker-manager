@@ -1,18 +1,18 @@
 package settings
 
 import (
-	"gopkg.in/yaml.v2"
+	"encoding/json"
 	"log"
 	"os"
 	"path"
 )
 
-var SettingsFileName = "settings.yaml"
+var SettingsFileName = "settings.json"
 var SettingsFileDir = path.Join(os.Getenv("HOME"), ".config", "docker-manager")
 var SettingsFileLocation = path.Join(SettingsFileDir, SettingsFileName)
 
 type Settings struct {
-	Socket string `yaml:"socket" json:"socket"`
+	Socket string `json:"socket"`
 }
 
 func isSettingsFileExists() bool {
@@ -33,16 +33,14 @@ func createSettingsFile() {
 
 func GetSettings() *Settings {
 	s := &Settings{}
-
 	f, _ := os.ReadFile(SettingsFileLocation)
-
-	yaml.Unmarshal(f, s)
+	json.Unmarshal(f, s)
 
 	return s
 }
 
 func SaveSettings(s *Settings) {
-	o, _ := yaml.Marshal(s)
+	o, _ := json.Marshal(s)
 
 	if !isSettingsFileExists() {
 		createSettingsFile()
