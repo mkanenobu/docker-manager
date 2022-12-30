@@ -13,7 +13,7 @@ type Message = events.Message
 
 type EventSubscriber func(unsubscribeCh chan bool, onReceive func(msg Message), onError func(err error))
 
-func NewEventsSubscriber(filters filters.Args) EventSubscriber {
+func NewDockerEventsSubscriber(filters filters.Args) EventSubscriber {
 	return func(unsubscribeCh chan bool, onReceive func(msg Message), onError func(err error)) {
 		cli := docker.Client()
 
@@ -37,18 +37,4 @@ func NewEventsSubscriber(filters filters.Args) EventSubscriber {
 			}
 		}
 	}
-}
-
-func SubscribeContainerEvents(unsubscribeCh chan bool, onReceive func(msg Message), onError func(err error)) {
-	f := filters.NewArgs(
-		filters.Arg("type", "container"),
-	)
-	NewEventsSubscriber(f)(unsubscribeCh, onReceive, onError)
-}
-
-func SubscribeImageEvents(unsubscribeCh chan bool, onReceive func(msg Message), onError func(err error)) {
-	f := filters.NewArgs(
-		filters.Arg("type", "image"),
-	)
-	NewEventsSubscriber(f)(unsubscribeCh, onReceive, onError)
 }

@@ -5,8 +5,8 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
-const EventName = "open-settings"
+const OpenSettingsEventName = "open-settings"
 
 func EmitOpenSettingsEvent(ctx context.Context) {
-	runtime.EventsEmit(ctx, EventName, nil)
+	runtime.EventsEmit(ctx, OpenSettingsEventName, nil)
 }
