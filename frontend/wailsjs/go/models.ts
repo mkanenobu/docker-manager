@@ -228,7 +228,7 @@ export namespace image {
 export namespace settings {
 	
 	export class Settings {
-	    socket: string;
+	    socket?: string;
 	
 	    static createFrom(source: any = {}) {
 	        return new Settings(source);

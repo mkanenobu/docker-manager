@@ -6,8 +6,10 @@ import { wails, type WailsTypes } from "~/wails";
 
 export const Settings: FC = () => {
   const [form] = Form.useForm<WailsTypes.settings.Settings>();
-  const { showSuccessToast } = useToast();
+  const { showSuccessToast, showOperationFailedToast } = useToast();
+
   const { data: settings } = useSWR("settings", wails.Settings);
+
   useEffect(() => {
     form.setFieldValue("socket", settings?.socket);
   }, [settings]);
@@ -18,8 +20,12 @@ export const Settings: FC = () => {
         name="basic"
         form={form}
         onFinish={(v) => {
-          return wails.SaveSettings(v).then(() => {
-            showSuccessToast("Settings saved");
+          return wails.SaveSettings(v).then((res) => {
+            if (res) {
+              showSuccessToast("Settings saved");
+            } else {
+              showOperationFailedToast("save settings");
+            }
           });
         }}
       >

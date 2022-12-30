@@ -27,6 +27,6 @@ export function ImageLs():Promise<Array<types.ImageSummary>>;
 
 export function ImageRemove(arg1:string):Promise<boolean>;
 
-export function SaveSettings(arg1:settings.Settings):Promise<void>;
+export function SaveSettings(arg1:settings.Settings):Promise<boolean>;
 
 export function Settings():Promise<settings.Settings>;

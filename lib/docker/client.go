@@ -7,11 +7,9 @@ import (
 
 func WithSettings(c *client.Client) error {
 	s := settings.GetSettings()
-	if len(s.Socket) != 0 {
-		err := client.WithHost("unix://" + s.Socket)(c)
-		if err != nil {
-			return err
-		}
+
+	if s.Socket != nil && len(*s.Socket) != 0 {
+		return client.WithHost("unix://" + *s.Socket)(c)
 	}
 	return nil
 }

@@ -106,6 +106,7 @@ func (a *App) Settings() settings.Settings {
 	return *settings.GetSettings()
 }
 
-func (a *App) SaveSettings(s settings.Settings) {
-	settings.SaveSettings(&s)
+func (a *App) SaveSettings(s settings.Settings) bool {
+	err := settings.SaveSettings(&s)
+	return err == nil
 }

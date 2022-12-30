@@ -2,7 +2,6 @@ package settings
 
 import (
 	"encoding/json"
-	"log"
 	"os"
 	"path"
 )
@@ -12,7 +11,7 @@ var SettingsFileDir = path.Join(os.Getenv("HOME"), ".config", "docker-manager")
 var SettingsFileLocation = path.Join(SettingsFileDir, SettingsFileName)
 
 type Settings struct {
-	Socket string `json:"socket"`
+	Socket *string `json:"socket,omitempty"`
 }
 
 func isSettingsFileExists() bool {
@@ -20,15 +19,13 @@ func isSettingsFileExists() bool {
 	return !os.IsNotExist(err)
 }
 
-func createSettingsFile() {
+func createSettingsFile() error {
 	err := os.MkdirAll(SettingsFileDir, 0755)
 	if err != nil {
-		log.Print(err)
+		return err
 	}
 	_, err = os.Create(SettingsFileLocation)
-	if err != nil {
-		log.Print(err)
-	}
+	return err
 }
 
 func GetSettings() *Settings {
@@ -39,15 +36,15 @@ func GetSettings() *Settings {
 	return s
 }
 
-func SaveSettings(s *Settings) {
-	o, _ := json.Marshal(s)
+func SaveSettings(s *Settings) error {
+	o, _ := json.MarshalIndent(s, "", "  ")
 
 	if !isSettingsFileExists() {
-		createSettingsFile()
+		err := createSettingsFile()
+		if err != nil {
+			return err
+		}
 	}
 
-	err := os.WriteFile(SettingsFileLocation, o, 0644)
-	if err != nil {
-		log.Print(err)
-	}
+	return os.WriteFile(SettingsFileLocation, o, 0644)
 }
