@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { defaultDateTimeFormat } from "~/helpers/date-helper";
 import { shortenSha256Hash } from "~/helpers/string-helper";
 import { wails } from "~/wails";
-import styles from "./Container.module.css"
+import styles from "./Container.module.css";
 
 const formatObjectDateTimeField = (obj: Record<string, any>) => {
   for (const [key, value] of Object.entries(obj)) {
@@ -61,7 +61,13 @@ export const Container: FC<{ id: string }> = ({ id }) => {
   );
 
   return (
-    <Card title={`ID: ${id}`}>
+    <Card
+      title={
+        <Typography.Paragraph>
+          ID: <Typography.Text copyable>{id}</Typography.Text>
+        </Typography.Paragraph>
+      }
+    >
       {!container ? (
         <Empty />
       ) : (

@@ -26,7 +26,13 @@ export const Image: FC<{ id: string }> = ({ id }) => {
   const { data: image } = useSWR(`image/${id}`, () => wails.ImageInspect(id));
 
   return (
-    <Card title={`ID: ${id}`}>
+    <Card
+      title={
+        <Typography.Paragraph>
+          ID: <Typography.Text copyable>{id}</Typography.Text>
+        </Typography.Paragraph>
+      }
+    >
       {!image ? (
         <Empty />
       ) : (
