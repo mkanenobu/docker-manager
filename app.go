@@ -4,6 +4,7 @@ import (
 	"context"
 	"docker-manager/lib/container"
 	"docker-manager/lib/dialog"
+	"docker-manager/lib/docker"
 	"docker-manager/lib/events"
 	"docker-manager/lib/image"
 	"docker-manager/lib/settings"
@@ -108,5 +109,16 @@ func (a *App) Settings() settings.Settings {
 
 func (a *App) SaveSettings(s settings.Settings) bool {
 	err := settings.SaveSettings(&s)
+	return err == nil
+}
+
+func (a *App) CheckConnection(host string) bool {
+	err := docker.CheckConnection(&a.ctx, host)
+
+	if err != nil {
+		dialog.ShowErrorDialog(a.ctx, err)
+		return false
+	}
+
 	return err == nil
 }

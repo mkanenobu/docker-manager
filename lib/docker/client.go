@@ -1,6 +1,7 @@
 package docker
 
 import (
+	"context"
 	"docker-manager/lib/settings"
 	"github.com/docker/docker/client"
 )
@@ -21,4 +22,13 @@ func Client() *client.Client {
 	}
 	defer cli.Close()
 	return cli
+}
+
+func CheckConnection(ctx *context.Context, host string) error {
+	cli, err := client.NewClientWithOpts(client.WithHost("unix://"+host), client.WithAPIVersionNegotiation())
+	if err != nil {
+		return err
+	}
+	_, err = cli.Ping(*ctx)
+	return err
 }

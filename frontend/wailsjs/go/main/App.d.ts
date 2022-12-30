@@ -5,6 +5,8 @@ import {image} from '../models';
 import {types} from '../models';
 import {settings} from '../models';
 
+export function CheckConnection(arg1:string):Promise<boolean>;
+
 export function ContainerInspect(arg1:string):Promise<container.ContainerDetail>;
 
 export function ContainerPause(arg1:string):Promise<boolean>;
