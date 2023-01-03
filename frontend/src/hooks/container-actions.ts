@@ -1,54 +1,62 @@
+import useSWRMutation from "swr/mutation";
 import { useToast } from "~/hooks/toast-hooks";
 import { wails } from "~/wails";
 
-export const useContainerActions = () => {
+export const useContainerActions = (containerId: string) => {
   const { showOperationFailedToast } = useToast();
 
-  const requestWrapper = async (
-    res: Promise<boolean>,
-    messages: { operation: string }
-  ) => {
-    await res.catch((err) => {
-      showOperationFailedToast(messages.operation, err.message);
-    });
-    return res;
-  };
+  const { trigger: pauseContainer } = useSWRMutation(
+    containerId,
+    wails.ContainerPause,
+    {
+      onError: (err) =>
+        showOperationFailedToast("pause container", err.message),
+    }
+  );
 
-  const pauseContainer = (id: string) => {
-    return requestWrapper(wails.ContainerPause(id), {
-      operation: "pause container",
-    });
-  };
+  const { trigger: unpauseContainer } = useSWRMutation(
+    containerId,
+    wails.ContainerUnpause,
+    {
+      onError: (err) =>
+        showOperationFailedToast("unpause container", err.message),
+    }
+  );
 
-  const unpauseContainer = (id: string) => {
-    return requestWrapper(wails.ContainerUnpause(id), {
-      operation: "unpause container",
-    });
-  };
+  const { trigger: stopContainer } = useSWRMutation(
+    containerId,
+    wails.ContainerStop,
+    {
+      onError: (err) => showOperationFailedToast("stop container", err.message),
+    }
+  );
 
-  const stopContainer = (id: string) => {
-    return requestWrapper(wails.ContainerStop(id), {
-      operation: "stop container",
-    });
-  };
+  const { trigger: startContainer } = useSWRMutation(
+    containerId,
+    wails.ContainerStart,
+    {
+      onError: (err) =>
+        showOperationFailedToast("start container", err.message),
+    }
+  );
 
-  const startContainer = (id: string) => {
-    return requestWrapper(wails.ContainerStart(id), {
-      operation: "start container",
-    });
-  };
+  const { trigger: restartContainer } = useSWRMutation(
+    containerId,
+    wails.ContainerRestart,
+    {
+      onError: (err) =>
+        showOperationFailedToast("restart container", err.message),
+    }
+  );
 
-  const restartContainer = (id: string) => {
-    return requestWrapper(wails.ContainerRestart(id), {
-      operation: "restart container",
-    });
-  };
-
-  const removeContainer = (id: string) => {
-    return requestWrapper(wails.ContainerRemove(id), {
-      operation: "remove container",
-    });
-  };
+  const { trigger: removeContainer } = useSWRMutation(
+    containerId,
+    wails.ContainerRemove,
+    {
+      onError: (err) =>
+        showOperationFailedToast("remove container", err.message),
+    }
+  );
 
   return {
     pauseContainer,

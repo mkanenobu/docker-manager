@@ -25,7 +25,7 @@ export const ContainerActionMenu: FC<{
     startContainer,
     restartContainer,
     removeContainer,
-  } = useContainerActions();
+  } = useContainerActions(containerId);
   const { showSuccessToast } = useToast();
 
   const onClick = (action: () => Promise<unknown>) => () => {
