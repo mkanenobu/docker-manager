@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/docker/docker v20.10.21+incompatible
-	github.com/wailsapp/wails/v2 v2.2.0
+	github.com/wailsapp/wails/v2 v2.3.1
 )
 
 require (
