@@ -21,6 +21,8 @@ const colorByState = (state: ContainerState) => {
   }
 };
 
-export const ContainerStatusTag: FC<{ state: ContainerState }> = ({ state }) => {
+export const ContainerStatusTag: FC<{ state: ContainerState }> = ({
+  state,
+}) => {
   return <Tag color={colorByState(state)}>{capitalize(state)}</Tag>;
 };

@@ -85,7 +85,7 @@ export namespace container {
 	    Created: string;
 	    Path: string;
 	    Args: string[];
-	    // Go type: types.ContainerState
+	    // Go type: types
 	    State?: any;
 	    Image: string;
 	    ResolvConfPath: string;
@@ -166,11 +166,11 @@ export namespace image {
 	    Comment: string;
 	    Created: string;
 	    Container: string;
-	    // Go type: container.Config
+	    // Go type: container
 	    ContainerConfig?: any;
 	    DockerVersion: string;
 	    Author: string;
-	    // Go type: container.Config
+	    // Go type: container
 	    Config?: any;
 	    Architecture: string;
 	    Variant?: string;
@@ -268,7 +268,7 @@ export namespace types {
 	    RepoTags: string[];
 	    SharedSize: number;
 	    Size: number;
-	    VirtualSize: number;
+	    VirtualSize?: number;
 	
 	    static createFrom(source: any = {}) {
 	        return new ImageSummary(source);

@@ -11,25 +11,25 @@
     "fmt": "prettier 'src/**/*.{ts,tsx}' --write"
   },
   "dependencies": {
-    "@ant-design/colors": "^6.0.0",
-    "@ant-design/icons": "^4.8.0",
-    "antd": "^5.0.7",
-    "dayjs": "^1.11.7",
+    "@ant-design/colors": "^7.0.0",
+    "@ant-design/icons": "^5.1.4",
+    "antd": "^5.6.1",
+    "dayjs": "^1.11.8",
     "lodash.debounce": "^4.0.8",
-    "prettier-plugin-organize-imports": "^3.2.1",
+    "prettier-plugin-organize-imports": "^3.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "recoil": "^0.7.6",
-    "swr": "^2.0.0"
+    "recoil": "^0.7.7",
+    "swr": "^2.1.5"
   },
   "devDependencies": {
     "@types/lodash.debounce": "^4.0.7",
-    "@types/react": "^18.0.17",
-    "@types/react-dom": "^18.0.6",
-    "@vitejs/plugin-react-swc": "^3.0.1",
-    "prettier": "2.8.1",
-    "typescript": "4.9.3",
-    "vite": "^4.0.1",
-    "vite-tsconfig-paths": "^4.0.3"
+    "@types/react": "^18.2.12",
+    "@types/react-dom": "^18.2.5",
+    "@vitejs/plugin-react-swc": "^3.3.2",
+    "prettier": "2.8.8",
+    "typescript": "5.1.3",
+    "vite": "^4.3.9",
+    "vite-tsconfig-paths": "^4.2.0"
   }
 }

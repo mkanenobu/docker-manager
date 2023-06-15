@@ -1,5 +1,5 @@
 import { notification } from "antd";
-import type {ReactNode} from "react";
+import type { ReactNode } from "react";
 
 export const useToast = () => {
   const showSuccessToast = (message: ReactNode) => {

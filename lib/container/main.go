@@ -81,7 +81,7 @@ func Start(id string) error {
 
 func Stop(id string) error {
 	cli := docker.Client()
-	return cli.ContainerStop(context.Background(), id, nil)
+	return cli.ContainerStop(context.Background(), id, container.StopOptions{})
 }
 
 func Pause(id string) error {
@@ -96,7 +96,7 @@ func Unpause(id string) error {
 
 func Restart(id string) error {
 	cli := docker.Client()
-	return cli.ContainerRestart(context.Background(), id, nil)
+	return cli.ContainerRestart(context.Background(), id, container.StopOptions{})
 }
 
 func Remove(id string) error {
