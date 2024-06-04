@@ -64,7 +64,7 @@ func mapBuiltInContainerToContainer(c types.Container) Container {
 
 func Ps() ([]Container, error) {
 	cli := docker.Client()
-	containers, err := cli.ContainerList(context.Background(), types.ContainerListOptions{All: true})
+	containers, err := cli.ContainerList(context.Background(), container.ListOptions{All: true})
 	cs := []Container{}
 
 	for _, c := range containers {
@@ -76,7 +76,7 @@ func Ps() ([]Container, error) {
 
 func Start(id string) error {
 	cli := docker.Client()
-	return cli.ContainerStart(context.Background(), id, types.ContainerStartOptions{})
+	return cli.ContainerStart(context.Background(), id, container.StartOptions{})
 }
 
 func Stop(id string) error {
@@ -101,7 +101,7 @@ func Restart(id string) error {
 
 func Remove(id string) error {
 	cli := docker.Client()
-	return cli.ContainerRemove(context.Background(), id, types.ContainerRemoveOptions{})
+	return cli.ContainerRemove(context.Background(), id, container.RemoveOptions{})
 }
 
 func mapContainerJSONtoContainerDetail(c types.ContainerJSON) ContainerDetail {

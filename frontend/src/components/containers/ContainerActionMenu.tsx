@@ -7,7 +7,7 @@ import {
   SyncOutlined,
 } from "@ant-design/icons";
 import { type FC } from "react";
-import { ActionMenu, MenuAction } from "~/components/Atom/ActionMenu";
+import { ActionMenu, type MenuAction } from "~/components/Atom/ActionMenu";
 import { copyToClipboard } from "~/helpers/copy-to-clipboard";
 import { shortenSha256Hash } from "~/helpers/string-helper";
 import { useContainerActions } from "~/hooks/container-actions";
@@ -39,7 +39,7 @@ export const ContainerActionMenu: FC<{
       icon: <CodeOutlined />,
       onClick: () =>
         copyToClipboard(
-          `docker exec -it ${shortenSha256Hash(containerId)} `
+          `docker exec -it ${shortenSha256Hash(containerId)} `,
         ).then(() => {
           showSuccessToast("Copied exec command to clipboard");
         }),

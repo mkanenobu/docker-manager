@@ -1,9 +1,9 @@
 import { MoreOutlined } from "@ant-design/icons";
 import { Button, Dropdown, type MenuProps } from "antd";
-import type { ItemType } from "antd/lib/menu/hooks/useItems";
+import type { MenuItemType } from "antd/lib/menu/interface";
 import { type FC } from "react";
 
-export type MenuAction = ItemType;
+export type MenuAction = MenuItemType;
 
 export const ActionMenu: FC<{
   items: MenuProps["items"];

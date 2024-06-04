@@ -8,7 +8,6 @@ import (
 	"docker-manager/lib/events"
 	"docker-manager/lib/image"
 	"docker-manager/lib/settings"
-	"github.com/docker/docker/api/types"
 )
 
 // App struct
@@ -83,7 +82,7 @@ func (a *App) ContainerInspect(id string) container.ContainerDetail {
 	return cont
 }
 
-func (a *App) ImageLs() []types.ImageSummary {
+func (a *App) ImageLs() []image.Summary {
 	images, err := image.Ls()
 	if err != nil {
 		dialog.ShowErrorDialog(a.ctx, err)

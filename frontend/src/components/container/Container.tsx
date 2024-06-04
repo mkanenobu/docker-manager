@@ -34,7 +34,7 @@ const ContainerDescription: FC<{
           {JSON.stringify(
             formatObjectDateTimeField(container.State),
             undefined,
-            2
+            2,
           )}
         </Typography.Text>
       </Descriptions.Item>
@@ -57,7 +57,7 @@ const ContainerDescription: FC<{
 
 export const Container: FC<{ id: string }> = ({ id }) => {
   const { data: container } = useSWR(`container/${id}`, () =>
-    wails.ContainerInspect(id)
+    wails.ContainerInspect(id),
   );
 
   return (

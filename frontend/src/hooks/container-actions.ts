@@ -6,7 +6,7 @@ export const useContainerActions = () => {
 
   const requestWrapper = async (
     res: Promise<boolean>,
-    messages: { operation: string }
+    messages: { operation: string },
   ) => {
     await res.catch((err) => {
       showOperationFailedToast(messages.operation, err.message);

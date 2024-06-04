@@ -1,5 +1,5 @@
 export const convertByteToHumanReadable = (
-  bytes: number
+  bytes: number,
 ): { value: number; unit: "MB" | "KB" } => {
   let value = bytes / 1000;
   if (value < 1000) {

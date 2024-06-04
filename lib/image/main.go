@@ -5,16 +5,19 @@ import (
 	"docker-manager/lib/docker"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/image"
 )
 
-func Ls() ([]types.ImageSummary, error) {
+type Summary = image.Summary
+
+func Ls() ([]Summary, error) {
 	cli := docker.Client()
-	return cli.ImageList(context.Background(), types.ImageListOptions{})
+	return cli.ImageList(context.Background(), image.ListOptions{})
 }
 
 func Remove(id string) error {
 	cli := docker.Client()
-	_, err := cli.ImageRemove(context.Background(), id, types.ImageRemoveOptions{})
+	_, err := cli.ImageRemove(context.Background(), id, image.RemoveOptions{})
 	return err
 }
 

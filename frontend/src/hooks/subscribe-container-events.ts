@@ -34,12 +34,12 @@ export type ContainerEvent = {
 const containerEventName = "container-events" as const;
 
 export const useSubscribeContainerEvents = (
-  eventHandler: (e: ContainerEvent) => void
+  eventHandler: (e: ContainerEvent) => void,
 ) => {
   useEffect(() => {
     console.info("Subscribe container-events");
     runtime.EventsOn(containerEventName, (e: ContainerEvent) =>
-      eventHandler(e)
+      eventHandler(e),
     );
 
     return () => {

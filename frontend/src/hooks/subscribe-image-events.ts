@@ -23,7 +23,7 @@ export type ImageEvent = {
 const imageEventName = "image-events" as const;
 
 export const useSubscribeImageEvents = (
-  eventHandler: (e: ImageEvent) => void
+  eventHandler: (e: ImageEvent) => void,
 ) => {
   useEffect(() => {
     console.info("Subscribe image-events");
