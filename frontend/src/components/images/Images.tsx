@@ -34,7 +34,7 @@ const notifyMessage = (e: ImageEvent) => {
   return (
     operation &&
     `Image ${shortenSha256Hash(e.id)} has been ${operation}.\n${formatUnixTime(
-      e.time,
+      e.time
     )}`
   );
 };
@@ -53,10 +53,10 @@ export const Images = () => {
         () => {
           mutate(() => data);
         },
-        durationHelper({ seconds: 0.2 }).asMilliseconds(),
+        durationHelper({ seconds: 0.2 }).asMilliseconds()
       );
     },
-    durationHelper({ seconds: 0.2 }).asMilliseconds(),
+    durationHelper({ seconds: 0.2 }).asMilliseconds()
   );
 
   useSubscribeImageEvents((e) => {

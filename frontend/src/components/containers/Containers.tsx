@@ -64,7 +64,7 @@ const notifyMessage = (e: ContainerEvent) => {
   return (
     operation &&
     `Container ${shortenSha256Hash(
-      e.id,
+      e.id
     )} has been ${operation}.\n${formatUnixTime(e.time)}`
   );
 };
@@ -84,10 +84,10 @@ export const Containers: FC = () => {
         () => {
           mutate(() => containers);
         },
-        durationHelper({ seconds: 0.2 }).asMilliseconds(),
+        durationHelper({ seconds: 0.2 }).asMilliseconds()
       );
     },
-    durationHelper({ seconds: 0.2 }).asMilliseconds(),
+    durationHelper({ seconds: 0.2 }).asMilliseconds()
   );
 
   useSubscribeContainerEvents((e) => {

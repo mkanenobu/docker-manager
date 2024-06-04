@@ -39,7 +39,7 @@ export const ContainerActionMenu: FC<{
       icon: <CodeOutlined />,
       onClick: () =>
         copyToClipboard(
-          `docker exec -it ${shortenSha256Hash(containerId)} `,
+          `docker exec -it ${shortenSha256Hash(containerId)} `
         ).then(() => {
           showSuccessToast("Copied exec command to clipboard");
         }),
